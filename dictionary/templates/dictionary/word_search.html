@@ -10,14 +10,10 @@
   <div class="wrapper">
     <header>Japanese Dictionary</header>
     <div class="search">
-      <form action="{% url 'word_search' %}" method="post">
-        {% csrf_token %}
-        <input type="text" id="searchInput" name="word" placeholder="Search a word"
-          value="{%if searchWord%}{{searchWord}}{%endif%}" required>
-        <input type="submit" style="display:none;" />
-        <i class="fas fa-search"></i>
-        <span class="material-icons" onclick="deleteInput()">close</span>
-      </form>
+      <input type="text" id="searchInput" name="word" placeholder="Search a word"
+        value="{%if searchWord%}{{searchWord}}{%endif%}" required>
+      <i class="fas fa-search"></i>
+      <span class="material-icons" onclick="deleteInput()">close</span>
     </div>
     <p class="info-text">Type any existing word and press enter to get meaning, example, synonyms, etc.</p>
   </div>
@@ -59,7 +55,6 @@
 {% block script %}
 <script>
   const searchInput = document.querySelector("#searchInput");
-  // const not_found = JSON.parse('{{ not_found|safe }}');
   const container = document.querySelector('.cards');
   const masonry = new Masonry(container, {
     itemSelector: '.card',
@@ -69,37 +64,11 @@
   function deleteInput() {
     searchInput.value = "";
   }
-  // if (not_found) {
-  //   const info_text = document.getElementsByClassName("info-text")[0];
-  //   info_text.innerHTML += "<br/><b class='no_found'>No result found</b>";
-  // }
 
-  function addToDeck(url, word, btn) {
-    $.ajax({
-      url: url,
-      type: "POST",
-      dataType: "json",
-      data: {
-        'slug': word.slug,
-        'hiragana': word.hiragana,
-        'kanji': word.kanji,
-        'meanings': JSON.stringify(word.meanings)
-      },
-      headers: {
-        "X-Requested-With": "XMLHttpRequest",
-        "X-CSRFToken": getCookie("csrftoken"), // don't forget to include the 'getCookie' function
-      },
-      success: (result) => {
-        btn.getElementsByTagName("a")[0].style.backgroundColor = '#c00424'
-        btn.getElementsByTagName("a")[0].textContent = 'Added!';
-        btn.onclick = function () {
-          return false;
-        }
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
-  }
+  $('#searchInput').keypress(function (e) {
+    if (e.which == '13') {
+      window.location =  "{% url 'word_search' %}?search=" + searchInput.value; 
+    }
+  })
 </script>
 {% endblock %}
