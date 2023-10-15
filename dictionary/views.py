@@ -23,6 +23,8 @@ def word_search(request):
 def word_detail(request, slug):
     print('here')
     print(f'slug: {slug}')
+    slug = slug.encode().decode('utf-8')
+    print(f'slug: {slug}')
     try:
         result = WordDict.objects.get(word=slug)
         word = {}
