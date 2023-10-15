@@ -21,6 +21,7 @@ def word_search(request):
     return render(request, 'dictionary/word_search.html', data)
 
 def word_detail(request, slug):
+    slug = str(slug)
     try:
         result = WordDict.objects.get(word=slug)
         word = {}
