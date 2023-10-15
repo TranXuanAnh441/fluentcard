@@ -4,7 +4,7 @@ from .models import WordDict, SentenceDict
 from django.contrib.auth.decorators import login_required
 import ast
 import urllib.parse
-from decks.models import Deck
+from decks.models import Deck, WordCard
 
 # Create your views here.
 
@@ -61,6 +61,7 @@ def word_detail(request, slug):
 
     data = {
         'word': word,
+        'word_added': WordCard.objects.filter(word=slug).count() > 0,
         'image_url': img,
         'decks': Deck.objects.filter(user=request.user)
     }
