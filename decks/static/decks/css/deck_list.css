@@ -1,0 +1,94 @@
+.decks-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-title {
+    margin-top: 60px;
+}
+
+.deck {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    max-width: 100%;
+    left: 50%;
+    margin: 20px;
+    overflow: hidden;
+}
+
+.deck h6 {
+    opacity: 0.6;
+    margin: 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.deck h2 {
+    letter-spacing: 1px;
+    margin: 10px 0;
+}
+
+.deck-preview {
+    background-color: var(--deep_purple);
+    color: #fff;
+    padding: 30px;
+    max-width: 250px;
+}
+
+.deck-preview a {
+    color: #fff;
+    display: inline-block;
+    font-size: 12px;
+    opacity: 0.6;
+    margin-top: 30px;
+    text-decoration: none;
+}
+
+.deck-info {
+    padding: 30px;
+    position: relative;
+    width: 100%;
+}
+
+.progress-container {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    text-align: right;
+    width: 150px;
+}
+
+.progress {
+    background-color: #ddd;
+    border-radius: 3px;
+    height: 5px;
+    width: 100%;
+}
+
+.progress::after {
+    border-radius: 3px;
+    background-color: var(--deep_purple);
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 5px;
+    width: var(--bar-width);
+}
+
+.progress-text {
+    font-size: 10px;
+    opacity: 0.6;
+    letter-spacing: 1px;
+}
+
+#learn-deck-btn {
+    margin-right: 10px;
+}
+
+#learn-deck-btn:hover {
+    /* border: 1px solid var(--purple); */
+    color: white;
+}

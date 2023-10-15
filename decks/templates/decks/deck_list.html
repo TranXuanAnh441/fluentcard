@@ -1,0 +1,66 @@
+{% extends "config/base.html" %}
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type='text/css' href="{% static 'decks/css/deck_list.css' %}" />
+<link rel="stylesheet" type='text/css' href="{% static 'decks/css/modal.css' %}" />
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'decks/js/add_deck_modal.js' %}"></script>
+<script src="{% static 'decks/js/deck_progress.js' %}"></script>
+{% endblock %}
+
+{% block modal %}
+<div class="modal" id="addDeckModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form class="form-group" action="{% url 'add_deck' %}" method="post">
+					{% csrf_token %}
+					<label for="deck_name">
+						<h3>Your deck name: </h3>
+					</label>
+					<input id="deck_name" class="form-control" type="text" name="deck_name"
+						value="{% if deck_name %} {{ deck_name }} {% else %} {% endif %}">
+					<input type="submit" class="btn btn-primary" value="Create deck">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="page-title">
+	<h2>You have learnt {{ learnt_card_num }} cards today. </h2>
+</div>
+<div class="decks-container justify-content-center">
+	{% for deck in decks %}
+	<div class="deck">
+		<div class="deck-preview">
+			<h2>Deck</h2>
+			<a href="#">View all cards <i class="fas fa-chevron-right"></i></a>
+		</div>
+		<div class="deck-info">
+			<div class="progress-container">
+				<div class="progress" learnt-card-num="{{ deck.learnt_card_num }}" card-num="{{deck.card_for_review_num}}"></div>
+				<span class="progress-text">
+					{{ deck.learnt_card_num }} / {{ deck.card_for_review_num }} Cards
+				</span>
+			</div>
+			<h6>{{ deck.created_at }}</h6>
+			<h2>{{ deck.name }}</h2>
+			<div class="btn btn-primary" id="add-card-btn"><a href={% url 'word_search' %}>Add
+					cards</a></div>
+		</div>
+	</div>
+	{% endfor %}
+	<button id="addDeckBtn" class="floating-btn">Add Deck</button>
+</div>
+{% endblock %}

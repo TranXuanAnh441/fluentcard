@@ -12,7 +12,7 @@ def register_request(request):
 			user = form.save()
 			login(request, user)
 			messages.success(request, "Registration successful." )
-			return redirect('login')
+			return redirect('deck_list')
 		messages.error(request, "Unsuccessful registration. Invalid information.")
 	form = NewUserForm()
 	return render (request=request, template_name="users/register.html", context={"register_form":form})
@@ -27,7 +27,7 @@ def login_request(request):
 			if user is not None:
 				login(request, user)
 				messages.info(request, f"You are now logged in as {username}.")
-				return redirect("word_search")
+				return redirect("deck_list")
 			else:
 				messages.error(request,"Invalid username or password.")
 		else:
