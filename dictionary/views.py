@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .utils import *
 from .models import WordDict, SentenceDict
 import ast
+import urllib.parse
 
 # Create your views here.
 def word_search(request):
@@ -23,7 +24,7 @@ def word_search(request):
 def word_detail(request, slug):
     print('here')
     print(f'slug: {slug}')
-    slug = slug.encode().decode('utf-8')
+    slug = urllib.parse.unquote(slug)
     print(f'slug: {slug}')
     try:
         result = WordDict.objects.get(word=slug)
