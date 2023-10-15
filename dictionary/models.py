@@ -8,7 +8,7 @@ class Word(models.Model):
         abstract = True
         
 class WordDict(Word):
-    definitions = models.CharField(max_length=1000)
+    definitions = models.CharField(max_length=5000)
     hiragana = models.CharField(max_length=100)
     kanji = models.CharField(max_length=100)
     created_at = models.DateField(auto_now_add=True)
