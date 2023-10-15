@@ -75,12 +75,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-}
+DATABASES = {}
 
 
 # Password validation
@@ -128,6 +123,5 @@ import os
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates') 
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
