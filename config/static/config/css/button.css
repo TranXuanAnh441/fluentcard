@@ -1,0 +1,71 @@
+.floating-btn {
+    border-radius: 26.5px;
+    background-color: #001F61;
+    border: 1px solid #001F61;
+    box-shadow: 0 16px 22px -17px #03153B;
+    color: #fff;
+    cursor: pointer;
+    font-size: 17px;
+    line-height: 20px;
+    padding: 15px 25px;
+    float: right;
+    z-index: 1000;
+}
+
+.floating-btn:hover {
+    border: 2px solid var(--purple);
+}
+
+.floating-btn:focus {
+    outline: none;
+}
+
+.btn {
+    background-color: var(--deep_purple);
+    border: 0;
+    border-radius: 20px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    font-size: 13px;
+    padding: 12px 25px;
+    float: right;
+    margin-top: 10px;
+    letter-spacing: 1px;
+    color: white;
+}
+
+.btn a {
+    color: white;
+    text-decoration: none;
+}
+
+/* .btn:hover a {
+    text-decoration: none;
+    color: white;
+} */
+
+.btn-link {
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all ease 0.2s;
+    background-color: var(--red);
+    border-color: var(--red);
+    float: right;
+}
+
+.btn-link:hover {
+    background: var(--darkred);
+    border-color: var(--darkred);
+    text-decoration: none;
+    color: white;
+}
+
+.able {
+    background: var(--darkred);
+}
+
+.disable {
+    background: var(--red);
+    text-decoration: none;
+    color: white;
+}

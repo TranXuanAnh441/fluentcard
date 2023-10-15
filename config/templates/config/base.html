@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+    {% load static %}
+    <link rel="stylesheet" type='text/css' href="{% static 'config/css/cloud.css' %}" />
+    <link rel="stylesheet" type='text/css' href="{% static 'config/css/button.css' %}" />
+    <title>Fluentcard</title>
+</head>
+
+<body>
+	{% block navbar %}
+	<div class="main-header navbar-fixed-top" id="navbar">
+		<nav class="main-header__nav">
+			<ul class="main-header__item-list">
+				<li class="main-header__item"><a href="{% url 'word_search' %}">Dictionary</a></li>
+			</ul>
+		</nav>
+	</div>
+	{% endblock %}
+	<div>
+		{% block modal %}{% endblock %}
+	</div>
+	<div class="bg">
+		<div class="container">
+			{% block content %}{% endblock %}
+		</div>
+		<div id="clouds">
+			<div class="cloud x1"></div>
+			<div class="cloud x2"></div>
+			<div class="cloud x3"></div>
+			<div class="cloud x4"></div>
+			<div class="cloud x5"></div>
+			<div class="cloud x1"></div>
+			<div class="cloud x2"></div>
+			<div class="cloud x3"></div>
+		</div>
+	</div>
+
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+		:root {
+			--red: #ef233c;
+			--darkred: #c00424;
+			--pastel_purple: #e6d1f2;
+			--purple: #4D59FB;
+			--deep_purple: #2A265F;
+			--yellow: #ffeb3b;
+
+		}
+
+		* {
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+			font-family: "Poppins", sans-serif;
+		}
+
+		body {
+			background-color: var(--pastel_purple);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			/* min-height: 100vh; */
+			overflow-x: hidden;
+			font-size: 1.5em;
+		}
+
+		.bg {
+			width: 90vw;
+			margin: 30px;
+		}
+
+		.container {
+			margin-top: 30px;
+		}
+
+		.blur {
+			-webkit-filter: blur(4px);
+		}
+
+		.page-title {
+			text-align: center;
+		}
+
+		.main-header {
+			width: 100%;
+			height: 2rem;
+			top: 0px;
+		}
+
+		.main-header__nav {
+			height: 100%;
+			display: flex;
+			float: right;
+			align-items: center;
+			margin-top: 30px;
+			margin-right: 50px;
+		}
+
+		.main-header__item-list {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+		}
+
+		.main-header__item {
+			margin: 0 1rem;
+			padding: 0;
+		}
+
+		.main-header__item a {
+			text-decoration: none;
+			color: var(--deep_purple);
+			font-weight: bold;
+			padding: 7px 40px 7px 12px;
+			font-size: 16px;
+		}
+
+		.main-header__item a:hover {
+			color: var(--yellow);
+		}
+
+		.modal {
+			display: none;
+			position: fixed;
+		}
+
+		.card {
+			display: inline-block;
+			padding: 30px;
+			background: white;
+			border-radius: 12px;
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 15%);
+			margin-bottom: 15px;
+			padding: 1.5em;
+		}
+
+		.card-title {
+			font-size: 30px;
+		}
+	</style>
+	{% block style %}{% endblock %}
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+	<script src="https://masonry.desandro.com/masonry.pkgd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.js"></script>
+	<script>
+		var prevScrollpos = window.pageYOffset;
+		window.onscroll = function () {
+			var currentScrollPos = window.pageYOffset;
+			if (prevScrollpos > currentScrollPos) {
+				document.getElementById("navbar").style.top = "0";
+			} else {
+				document.getElementById("navbar").style.top = "-50px";
+			}
+			prevScrollpos = currentScrollPos;
+		}
+
+		function getCookie(name) {
+			let cookieValue = null;
+			if (document.cookie && document.cookie !== "") {
+				const cookies = document.cookie.split(";");
+				for (let i = 0; i < cookies.length; i++) {
+					const cookie = cookies[i].trim();
+					if (cookie.substring(0, name.length + 1) === (name + "=")) {
+						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+						break;
+					}
+				}
+			}
+			return cookieValue;
+		}
+	</script>
+	{% block script %}{% endblock %}
+</body>
+
+</html>

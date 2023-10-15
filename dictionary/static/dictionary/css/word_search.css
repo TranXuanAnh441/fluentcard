@@ -1,0 +1,172 @@
+::selection {
+    color: white;
+    background: var(--purple);
+}
+
+.wrapper {
+    margin: auto;
+    width: 500px;
+    border-radius: 7px;
+    background: white;
+    padding: 25px 28px 35px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 15%);
+}
+
+.wrapper header {
+    font-size: 30px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.wrapper .search {
+    position: relative;
+    margin: 10px 0 18px;
+}
+
+.search input {
+    height: 53px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 0 42px;
+    border: 1px solid #999;
+}
+
+.search input:focus {
+    padding: 0 41px;
+    border: 2px solid var(--purple);
+}
+
+.search input::placeholder {
+    color: #B8B8B8;
+}
+
+.search :where(i, span) {
+    position: absolute;
+    top: 50%;
+    color: #999;
+    transform: translateY(-50%);
+}
+
+.search i {
+    left: 18px;
+    pointer-events: none;
+    font-size: 16px;
+}
+
+.search input:focus~i {
+    color: var(--purple);
+}
+
+.search span {
+    right: 15px;
+    cursor: pointer;
+    font-size: 18px;
+    display: none;
+}
+
+.search input:valid~span {
+    display: block;
+}
+
+.wrapper .info-text {
+    font-size: 13px;
+    color: #9A9A9A;
+    margin: -3px 0 -10px;
+}
+
+.wrapper.active .info-text {
+    display: none;
+}
+
+.info-text span {
+    font-weight: 500;
+}
+
+.wrapper ul {
+    height: 0;
+    opacity: 0;
+    padding-right: 1px;
+    overflow-y: hidden;
+    transition: all 0.2s ease;
+}
+
+.wrapper.active ul {
+    opacity: 1;
+    height: 303px;
+}
+
+.card {
+    width: 30%;
+}
+
+.card ul li {
+    list-style: none;
+    align-items: center;
+    border-bottom: 1px solid #D9D9D9;
+    justify-content: space-between;
+}
+
+ul li:last-child {
+    margin-bottom: 10px;
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+ul .meaning p {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+ul .meaning span {
+    font-size: 12px;
+    color: #989898;
+}
+
+ul .meaning i {
+    color: #999;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.spelling {
+    max-height: 215px;
+    margin-bottom: 10px;
+}
+
+.spelling .details {
+    padding-left: 10px;
+    border-radius: 4px 0 0 4px;
+    border-left: 3px solid var(--purple);
+}
+
+.spelling p {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.spelling span {
+    font-size: 15px;
+    color: #7E7E7E;
+}
+
+.sentences {
+    margin-top: 20px;
+    border-bottom: #7E7E7E;
+}
+
+.cards {
+    padding: 15px 0px;
+    margin-left: 30px;
+    width: 100%;
+}
+
+.no_found {
+    color: blue;
+    font-size: 16px;
+}
+
+ul .content::-webkit-scrollbar {
+    width: 0px;
+}
