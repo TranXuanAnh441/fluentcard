@@ -49,7 +49,8 @@
 		</div>
 		<div class="deck-info">
 			<div class="progress-container">
-				<div class="progress" learnt-card-num="{{ deck.learnt_card_num }}" card-num="{{deck.card_for_review_num}}"></div>
+				<div class="progress" learnt-card-num="{{ deck.learnt_card_num }}"
+					card-num="{{deck.card_for_review_num}}"></div>
 				<span class="progress-text">
 					{{ deck.learnt_card_num }} / {{ deck.card_for_review_num }} Cards
 				</span>
@@ -58,6 +59,8 @@
 			<h2>{{ deck.name }}</h2>
 			<div class="btn btn-primary" id="add-card-btn"><a href={% url 'word_search' %}>Add
 					cards</a></div>
+			<div class="btn" id="learn-deck-btn"><a href={% url 'deck_test' deck_id=deck.id %}>Learn
+					deck</a></div>
 		</div>
 	</div>
 	{% endfor %}

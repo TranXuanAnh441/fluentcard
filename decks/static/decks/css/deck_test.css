@@ -1,0 +1,222 @@
+.container {
+    display: flex;
+    width: 80vw;
+    height: 80vh;
+}
+
+.question-container {
+    width: 100%;
+    max-width: 40em;
+    margin: 10px;
+    padding: 1.8em;
+    border-radius: 0.6em;
+    background-color: #ffffff;
+    display: block;
+    height: max-content;
+}
+
+.answer-container {
+    height: auto;
+    margin: 10px;
+}
+
+.header {
+    margin-bottom: 1.8em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.6em;
+    border-bottom: 0.1em solid #c0bfd2;
+}
+
+.timer-div {
+    background-color: #e1f5fe;
+    border-radius: 1.8em;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7em 1.8em;
+}
+
+.question {
+    margin-bottom: 1.25em;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.option-div {
+    font-size: 0.9em;
+    width: 100%;
+    padding: 1em;
+    margin: 0.3em 0;
+    text-align: left;
+    outline: none;
+    background: transparent;
+    border: 1px solid #c0bfd2;
+    border-radius: 0.3em;
+}
+
+.option-div:disabled {
+    color: #000000;
+    cursor: not-allowed;
+}
+
+.hide {
+    display: none;
+}
+
+.incorrect {
+    background-color: #ffdde0;
+    color: #d32f2f;
+    border-color: #d32f2f;
+}
+
+.correct {
+    background-color: #e7f6d5;
+    color: #689f38;
+    border-color: #689f38;
+}
+
+#user-score {
+    font-size: 1.5em;
+    color: #ffffff;
+}
+
+.form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+    width: 70%;
+    height: 100%;
+    /* margin-bottom: 60px; */
+}
+
+.form__field {
+    font-family: inherit;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #9b9b9b;
+    outline: 0;
+    font-size: 1.4rem;
+    color: gray;
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+        color: transparent;
+    }
+
+    &:placeholder-shown~.form__label {
+        font-size: 1rem;
+        cursor: text;
+        top: 20px;
+    }
+}
+
+.form__label {
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1.5rem;
+    color: #9b9b9b;
+}
+
+.form__field:focus {
+    ~.form__label {
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1.4em;
+        color: blue;
+    }
+
+    padding-bottom: 6px;
+    font-weight: 500;
+    border-width: 2px;
+    border-color: blue;
+    /* border-image: blue; */
+    border-image-slice: 1;
+}
+
+/* reset input */
+.form__field {
+
+    &:required,
+    &:invalid {
+        box-shadow: none;
+    }
+}
+
+.popup {
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    /* margin-top: 10px;
+    margin-bottom: 10px; */
+}
+
+.popup:after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 1px 14px rgba(0, 0, 0, .2);
+}
+
+.popup:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    transform: rotate(45deg);
+    box-shadow: 0 1px 14px rgba(0, 0, 0, .2);
+    background: #fff;
+    position: absolute;
+    /* z-index: 998; */
+}
+
+/*
+  Different arrow positioning
+  */
+#feedback-box {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+.popup.arrow-right:before {
+    top: calc(50% - 10px);
+    right: -8px;
+}
+
+/* 
+  Popup wrapper
+  This is where we add the white background and padding of the content within the popup
+  */
+.popup-wrapper {
+    width: 100%;
+    padding: 32px;
+    border-radius: 4px;
+    background: #fff;
+    position: relative;
+    /* z-index: 998; */
+}
+
+.card-title {
+    font-size: 30px;
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.answer-container p {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.answer-container span {
+    font-size: 12px;
+    color: white;
+    background-color: #8abc83;
+    padding: 2px 5px 3px 5px;
+    border-radius: 3px;
+}

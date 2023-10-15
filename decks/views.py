@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
-from .models import Deck, WordCard, WordLearnHistory
-from datetime import date
-from django.contrib.auth.decorators import login_required
 import ast
+import random
+from datetime import date
+from supermemo2 import SMTwo
+from .models import Deck, WordCard, WordLearnHistory
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponseBadRequest
+from .utils import *
 
 # Create your views here.
 
@@ -41,3 +45,77 @@ def add_card(request):
             deck_id), content=str(definitions)).save()
 
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def deck_test(request, deck_id):
+    cards = WordCard.objects.filter(deck_id=deck_id).all()
+    learnt_card_list = list(WordLearnHistory.objects.filter(
+        card_id__in=cards).values_list('card_id', flat=True))
+    first_visit_cards = [
+        card.id for card in cards if card.id not in learnt_card_list]
+    today_review_cards = list(WordLearnHistory.objects.filter(
+        card_id__in=cards, next_date=date.today()).values_list('card_id', flat=True))
+    arr = first_visit_cards + today_review_cards
+    random.shuffle(arr)
+    
+    data = {
+        'card_ids': json.dumps(arr),
+        'question_num': len(arr),
+    }
+    return render(request, 'decks/deck_test.html', data)
+
+
+def get_card_question(request):
+    if request.method == "POST":
+        card_id = request.POST.get('card_id')
+        card = WordCard.objects.get(id=int(card_id))
+        question = sendQuestionRequest(card.word)
+        data = {
+            'question': question,
+            'word': card.word,
+            'content': card.content,
+        }
+        return JsonResponse(data)
+    else:
+        return HttpResponseBadRequest('Invalid request')
+
+
+def get_card_answer(request):
+    if request.method == "POST":
+        question = request.POST.get('question')
+        answer = request.POST.get('answer')
+        card_id = request.POST.get('card_id')
+        time = int(request.POST.get('time')[:-1])
+        quality = 1
+        feedback = sendAnswerRequest(question, answer)
+        if feedback['correct']:
+            quality += 1
+            if time > 0:
+                quality += 1
+                if time >= 10:
+                    quality += 1
+                    if time >= 20:
+                        quality += 1
+
+        review_history = WordLearnHistory.objects.filter(
+            card_id=int(card_id)).order_by('-learnt_date')
+        if review_history.count() == 0:
+            review = SMTwo.first_review(quality)
+            WordLearnHistory.objects.create(card_id=int(
+                card_id), first_visit=True, easiness=review.easiness, interval=review.interval, next_date=review.review_date).save()
+        else:
+            last_review = review_history[0]
+            review = SMTwo(float(last_review.easiness),
+                           last_review.interval, 1).review(quality)
+            WordLearnHistory.objects.create(card_id=int(
+                card_id), easiness=review.easiness, interval=review.interval, next_date=review.review_date).save()
+        card = WordCard.objects.get(id=card_id)
+
+        data = {'explanation': feedback['explanation'],
+                'correct':  feedback['correct'],
+                'card-title': card.word,
+                'card-content': ', '.join(ast.literal_eval(card.content))}
+        return JsonResponse(data)
+    else:
+        return HttpResponseBadRequest('Invalid request')
