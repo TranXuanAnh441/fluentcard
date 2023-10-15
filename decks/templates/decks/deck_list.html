@@ -1,16 +1,5 @@
 {% extends "config/base.html" %}
 
-{% load static %}
-{% block style %}
-<link rel="stylesheet" type='text/css' href="{% static 'decks/css/deck_list.css' %}" />
-<link rel="stylesheet" type='text/css' href="{% static 'decks/css/modal.css' %}" />
-{% endblock %}
-
-{% block script %}
-<script src="{% static 'decks/js/add_deck_modal.js' %}"></script>
-<script src="{% static 'decks/js/deck_progress.js' %}"></script>
-{% endblock %}
-
 {% block modal %}
 <div class="modal" id="addDeckModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
@@ -66,4 +55,15 @@
 	{% endfor %}
 	<button id="addDeckBtn" class="floating-btn">Add Deck</button>
 </div>
+{% endblock %}
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type='text/css' href="{% static 'decks/css/deck_list.css' %}" />
+<link rel="stylesheet" type='text/css' href="{% static 'decks/css/modal.css' %}" />
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'decks/js/add_deck_modal.js' %}"></script>
+<script src="{% static 'decks/js/deck_progress.js' %}"></script>
 {% endblock %}
