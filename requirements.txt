@@ -15,7 +15,6 @@ httpx==0.23.3
 idna==3.4
 jisho-api==0.1.8
 logzero==1.7.0
-psycopg2==2.9.9
 psycopg2-binary==2.9.9
 pydantic==1.10.13
 Pygments==2.16.1
