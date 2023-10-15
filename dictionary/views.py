@@ -5,7 +5,7 @@ import ast
 
 # Create your views here.
 def word_search(request):
-    search = (request.GET.get('search'))
+    search = request.GET.get('search')
     data = {}
     if search:
         data['searchWord'] = search
@@ -21,7 +21,8 @@ def word_search(request):
     return render(request, 'dictionary/word_search.html', data)
 
 def word_detail(request, slug):
-    print(slug)
+    print('here')
+    print(f'slug: {slug}')
     try:
         result = WordDict.objects.get(word=slug)
         word = {}
