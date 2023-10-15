@@ -1,0 +1,49 @@
+{% extends "config/base.html" %}
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type='text/css' href="{% static 'css/dictionary/word_detail.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div>
+    <div class="row justify-content-center">
+        <div class="card d-inline-block">
+            <div>
+                <h3 class="card-title">{{ word.slug }} <i class="fas fa-volume-up"></i></h3>
+                <div class="card-content">
+                    <div class="spelling mb-1">
+                        <p>{{ word.kanji }}</p>
+                        <span>{{ word.hiragana }}</span>
+                    </div>
+                    <div class="meaning">
+                        <ul>
+                            {% for meaning in word.definitions %}
+                            <li class="meaning">
+                                <span>{{ meaning.grammar }}</span>
+                                <p>{{ meaning.definition }}</p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="sentences mt-3">
+                        <ul>
+                            {% for sentence in word.sentences %}
+                            <li>
+                                <span style="font-weight:bold;" class="sentence_jp"> <i class="fa fa-star"></i>
+                                    {{ sentence.jp_sentence }} <i class="fas fa-volume-up"></i></span>
+                                <p>{{ sentence.en_sentence }}</p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card d-inline-block">
+            <img src="{{ image_url }}" title="{{ image_url }}">
+        </div>
+    </div>
+</div>
+{% endblock %}

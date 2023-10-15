@@ -1,0 +1,102 @@
+.info-text span {
+    font-weight: 500;
+}
+
+.card {
+    width: 48%; 
+    margin-right: 20px;
+}
+
+ul {
+    padding-right: 1px;
+    overflow-y: hidden;
+    transition: all 0.2s ease;
+}
+
+ul li {
+    list-style: none;
+    align-items: center;
+    justify-content: space-between;
+}
+
+ul li:last-child {
+    margin-bottom: 5px;
+    border-bottom: 10px;
+    padding-bottom: 0;
+}
+
+.meaning {
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.meaning p {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.meaning span {
+    font-size: 12px;
+    color: #989898;
+}
+
+.meaning i {
+    color: #999;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.spelling {
+    max-height: 215px;
+    overflow-y: auto;
+}
+
+.spelling {
+    padding-left: 10px;
+    border-radius: 4px 0 0 4px;
+    border-left: 3px solid #4D59FB;
+}
+
+.spelling p {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.spelling span {
+    font-size: 15px;
+    color: #7E7E7E;
+}
+
+.sentences {
+    border-bottom: #7E7E7E;
+    font-size: 15px;
+}
+
+img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.meaning {
+    font-size: 15px;
+}
+
+.fa-volume-up {
+    cursor: pointer;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 15px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.modal-header {
+    border-bottom: 2px solid var(--deep_purple);
+}
+
+select {
+    font-size: 1.5rem;
+}
