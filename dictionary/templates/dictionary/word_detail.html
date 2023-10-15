@@ -5,6 +5,35 @@
 <link rel="stylesheet" type='text/css' href="{% static 'css/dictionary/word_detail.css' %}" />
 {% endblock %}
 
+{% block modal %}
+<div class="modal" id="addToDeckModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add to deck</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-group" action="{% url 'add_card' %}" method="post">
+                    {% csrf_token %}
+                    <select name="deck_id" class="deck_id">
+                        {% for deck in decks %}
+                        <option value="{{ deck.id }}">{{ deck.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name='slug' value="{{ word.slug }}">
+                    <input type="hidden" name='definitions' value="{{ word.definitions }}">
+                    <input type="hidden" name='kanji' value="{{ word.kanji }}">
+                    <input type="submit" class="btn btn-primary" value="Add to deck">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 {% block content %}
 <div>
     <div class="row justify-content-center">
@@ -39,6 +68,17 @@
                         </ul>
                     </div>
                 </div>
+                <div class="btn-link-wrapper d-inline-block" id="addToDeckBtn">
+                    {% if word_added %}
+                    <div class="btn-link-wrapper d-inline-block">
+                        <a class="btn-link able" onclick="return false;">Added !</a>
+                    </div>
+                    {% else %}
+                    <div class="btn-link-wrapper d-inline-block">
+                        <a href="" class="btn-link disable" onclick="return false;">Add to deck</a>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="card d-inline-block">
@@ -46,4 +86,30 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    var modal = document.getElementById("addToDeckModal");
+    var btn = document.getElementById("addToDeckBtn");
+    var span = document.getElementsByClassName("close")[0];
+    var bg = document.getElementsByClassName("bg")[0];
+
+    btn.onclick = function () {
+        modal.style.display = "block";
+        bg.classList.add("blur");
+    }
+
+    span.onclick = function () {
+        modal.style.display = "none";
+        bg.classList.remove("blur");
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            bg.classList.remove("blur");
+        }
+    }
+</script>
 {% endblock %}

@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from .utils import *
 from .models import WordDict, SentenceDict
+from django.contrib.auth.decorators import login_required
 import ast
 import urllib.parse
+from decks.models import Deck
 
 # Create your views here.
+
+@login_required
 def word_search(request):
     search = request.GET.get('search')
     data = {}
@@ -21,11 +25,10 @@ def word_search(request):
             WordDict.objects.bulk_create([ obj for obj in word_objs ])
     return render(request, 'dictionary/word_search.html', data)
 
+
+@login_required
 def word_detail(request, slug):
-    print('here')
-    print(f'slug: {slug}')
     slug = urllib.parse.unquote(slug)
-    print(f'slug: {slug}')
     try:
         result = WordDict.objects.get(word=slug)
         word = {}
@@ -58,7 +61,8 @@ def word_detail(request, slug):
 
     data = {
         'word': word,
-        'image_url': img
+        'image_url': img,
+        'decks': Deck.objects.filter(user=request.user)
     }
 
     return render(request, 'dictionary/word_detail.html', data)
