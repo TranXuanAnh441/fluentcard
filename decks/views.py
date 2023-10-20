@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import random
+import ast
 from datetime import date
 from supermemo2 import SMTwo
 from .models import Deck, WordCard, WordLearnHistory
@@ -107,12 +108,16 @@ def get_card_answer(request):
                            last_review.interval, 1).review(quality)
             WordLearnHistory.objects.create(card_id=int(
                 card_id), easiness=review.easiness, interval=review.interval, next_date=review.review_date).save()
-        card = WordCard.objects.get(id=card_id)
+        word_dict = WordCard.objects.get(id=card_id).word
 
-        data = {'explanation': feedback['explanation'],
-                'correct':  json.dumps(correct),
-                'card-title': card.word.word,
-                'card-content': card.word.kanji}
+        data = {
+            'explanation': feedback['explanation'],
+            'correct':  json.dumps(correct),
+            'word-slug': word_dict.word,
+            'word-kanji': word_dict.kanji,
+            'word-hiragana': word_dict.hiragana,
+            'word-definitions': ' / '.join([word['definition'] for word in ast.literal_eval(word_dict.definitions)])
+            }
         return JsonResponse(data)
     else:
         return HttpResponseBadRequest('Invalid request')

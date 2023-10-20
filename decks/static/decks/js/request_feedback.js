@@ -18,15 +18,14 @@ function requestFeedback(request_feedback_url, cur_question, cur_answer, cur_car
             $(input).removeClass('check');
             if ((data['correct'] == 'True') || (data['correct'] == 'true') || (data['correct'] == true)) {
                 $(input).addClass('correct');
-                // $(input).css('border-color', 'green');
             } else {
                 $(input).addClass('incorrect');
-                // $(input).css('border-color', 'red');
             }
             document.getElementById("feedback").textContent = data['explanation'];
-            document.getElementById("card-title").textContent = data['card-title'];
-            document.getElementById("card-content").textContent = data['card-content'];
-
+            document.getElementById("word-slug").innerHTML = data['word-slug'] + `<i class="fas fa-volume-up"></i>`;
+            document.getElementById("word-kanji").textContent = data['word-kanji'];
+            document.getElementById("word-hiragana").textContent = data['word-hiragana'];
+            document.getElementById("word-definitions").textContent = data['word-definitions'];
         },
         error: (error) => {
             console.log(error);

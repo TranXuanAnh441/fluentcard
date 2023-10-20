@@ -208,10 +208,20 @@
     font-weight: 500;
 }
 
-.answer-container span {
-    font-size: 12px;
-    color: white;
-    background-color: #8abc83;
-    padding: 2px 5px 3px 5px;
-    border-radius: 3px;
+.spelling {
+    max-height: 215px;
+    overflow-y: auto;
+    padding-left: 10px;
+    border-radius: 4px 0 0 4px;
+    border-left: 3px solid #4D59FB;
+}
+
+.spelling p {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.spelling span {
+    font-size: 15px;
+    color: #7E7E7E;
 }

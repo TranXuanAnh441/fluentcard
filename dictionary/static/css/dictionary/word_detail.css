@@ -48,9 +48,6 @@ ul li:last-child {
 .spelling {
     max-height: 215px;
     overflow-y: auto;
-}
-
-.spelling {
     padding-left: 10px;
     border-radius: 4px 0 0 4px;
     border-left: 3px solid #4D59FB;
