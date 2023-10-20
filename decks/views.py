@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-import ast
 import random
 from datetime import date
 from supermemo2 import SMTwo
@@ -50,6 +49,8 @@ def deck_test(request, deck_id):
     today_review_cards = list(WordLearnHistory.objects.filter(
         card_id__in=cards, next_date=date.today()).values_list('card_id', flat=True))
     arr = first_visit_cards + today_review_cards
+    if len(arr) == 0:
+        redirect('deck_list')
     random.shuffle(arr)
     
     data = {

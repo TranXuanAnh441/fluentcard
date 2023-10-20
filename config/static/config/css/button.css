@@ -53,19 +53,11 @@
     float: right;
 }
 
-.btn-link:hover {
+.btn-link:hover,
+.btn-link:disabled
+{
     background: var(--darkred);
     border-color: var(--darkred);
-    text-decoration: none;
-    color: white;
-}
-
-.able {
-    background: var(--darkred);
-}
-
-.disable {
-    background: var(--red);
     text-decoration: none;
     color: white;
 }

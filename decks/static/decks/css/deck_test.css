@@ -55,20 +55,20 @@
     border-radius: 0.3em;
 }
 
-.option-div:disabled {
-    cursor: not-allowed;
-}
-
 .hide {
     display: none;
 }
 
 .incorrect {
-    border-color: red;
+    border: 1px solid red;
 }
 
 .correct {
-    border-color: green;
+    border: 1px solid green;
+}
+
+.check {
+    border: 1px solid purple;
 }
 
 #user-score {

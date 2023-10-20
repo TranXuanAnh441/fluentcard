@@ -15,6 +15,7 @@ function requestFeedback(request_feedback_url, cur_question, cur_answer, cur_car
         },
         success: (data) => {
             console.log(data);
+            $(input).removeClass('check');
             if ((data['correct'] == 'True') || (data['correct'] == 'true') || (data['correct'] == true)) {
                 $(input).addClass('correct');
                 // $(input).css('border-color', 'green');

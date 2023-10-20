@@ -73,8 +73,7 @@
   };
 
   function checker(e) {
-    $(e).css('border-color', 'blue');
-    $(e).addClass('disabled');
+    $(e).addClass('check');
     checkAnswer(e.textContent, e);
   }
 
@@ -98,6 +97,7 @@
       cur_question.type = 'multiple choice'
       cur_question.options = [];
       for (let i = 0; i < document.getElementsByClassName('option-div').length; i++) {
+        document.getElementsByClassName('option-div')[i].style.cursor = 'not-allowed';
         cur_question.options.push(document.getElementsByClassName('option-div')[i].textContent);
       }
     }
