@@ -1,3 +1,7 @@
+a:not([href]):not([tabindex]) {
+    color: white;
+}
+
 .floating-btn {
     border-radius: 26.5px;
     background-color: #001F61;
@@ -49,15 +53,14 @@
     border-radius: 8px;
     transition: all ease 0.2s;
     background-color: var(--red);
-    border-color: var(--red);
     float: right;
 }
 
 .btn-link:hover,
-.btn-link:disabled
+.disabled,
+.btn-link:focus
 {
     background: var(--darkred);
-    border-color: var(--darkred);
     text-decoration: none;
     color: white;
 }

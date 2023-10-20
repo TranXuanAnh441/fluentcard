@@ -97,7 +97,7 @@
       cur_question.type = 'multiple choice'
       cur_question.options = [];
       for (let i = 0; i < document.getElementsByClassName('option-div').length; i++) {
-        document.getElementsByClassName('option-div')[i].style.cursor = 'not-allowed';
+        document.getElementsByClassName('option-div')[i].onclick = false;
         cur_question.options.push(document.getElementsByClassName('option-div')[i].textContent);
       }
     }

@@ -66,14 +66,14 @@
                         </ul>
                     </div>
                 </div>
-                <div class="btn-link-wrapper d-inline-block" id="addToDeckBtn">
+                <div>
                     {% if word_added %}
                     <div class="btn-link-wrapper d-inline-block">
-                        <a class="btn-link able" onclick="return false;">Added !</a>
+                        <a class="btn-link disabled">Added !</a>
                     </div>
                     {% else %}
-                    <div class="btn-link-wrapper d-inline-block">
-                        <a href="" class="btn-link disable" onclick="return false;">Add to deck</a>
+                    <div class="btn-link-wrapper d-inline-block" id="addToDeckBtn">
+                        <a href="" class="btn-link" onclick="return false;">Add to deck</a>
                     </div>
                     {% endif %}
                 </div>

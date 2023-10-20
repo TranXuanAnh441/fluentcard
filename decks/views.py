@@ -84,8 +84,8 @@ def get_card_answer(request):
         time = int(request.POST.get('time')[:-1])
         quality = 1
         feedback = sendAnswerRequest(question, answer)
-        correct = bool(feedback['correct'])
-        print(f'correct: {correct}')
+        print(feedback)
+        correct = (feedback['correct'] == "True") or (feedback['correct'] == 'true')
         if correct:
             quality += 1
             if time > 0:
