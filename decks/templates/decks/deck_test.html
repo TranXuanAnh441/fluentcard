@@ -74,6 +74,7 @@
 
   function checker(e) {
     $(e).css('border-color', 'blue');
+    $(e).addClass('disabled');
     checkAnswer(e.textContent, e);
   }
 

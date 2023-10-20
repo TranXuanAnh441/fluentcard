@@ -20,7 +20,7 @@ function requestQuestion(request_question_url, cur_card_id, question_num) {
                 const options = question_data['options'];
                 const div = document.getElementById("question_form");
                 for (let i = 0; i < options.length; i++) {
-                    div.innerHTML += `<button class="option-div" onclick="checker(this)">${options[i]}</button>`
+                    div.innerHTML += `<div class="option-div" onclick="checker(this)">${options[i]}</button>`
                 }
             } else {
                 document.getElementById("question_form").innerHTML +=

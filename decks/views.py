@@ -83,7 +83,9 @@ def get_card_answer(request):
         time = int(request.POST.get('time')[:-1])
         quality = 1
         feedback = sendAnswerRequest(question, answer)
-        if feedback['correct']:
+        correct = bool(feedback['correct'])
+        print(f'correct: {correct}')
+        if correct:
             quality += 1
             if time > 0:
                 quality += 1
@@ -107,7 +109,7 @@ def get_card_answer(request):
         card = WordCard.objects.get(id=card_id)
 
         data = {'explanation': feedback['explanation'],
-                'correct':  json.dumps(bool(feedback['correct'])),
+                'correct':  json.dumps(correct),
                 'card-title': card.word.word,
                 'card-content': card.word.kanji}
         return JsonResponse(data)

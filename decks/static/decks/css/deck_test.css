@@ -56,7 +56,6 @@
 }
 
 .option-div:disabled {
-    color: #000000;
     cursor: not-allowed;
 }
 
@@ -65,15 +64,11 @@
 }
 
 .incorrect {
-    background-color: #ffdde0;
-    color: #d32f2f;
-    border-color: #d32f2f;
+    border-color: red;
 }
 
 .correct {
-    background-color: #e7f6d5;
-    color: #689f38;
-    border-color: #689f38;
+    border-color: green;
 }
 
 #user-score {
