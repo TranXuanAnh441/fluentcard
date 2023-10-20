@@ -34,15 +34,8 @@ def add_deck(request):
 def add_card(request):
     if request.method == "POST":
         deck_id = int(request.POST['deck_id'])
-        slug = request.POST['slug']
-        meanings = request.POST['definitions']
-        kanji = request.POST['kanji']
-        definitions = []
-
-        for meaning in ast.literal_eval(meanings):
-            definitions.append(meaning['definition'] +  f" {meaning['grammar']}")
-        WordCard.objects.create(card_type="ME", word=slug, deck_id=int(
-            deck_id), content=str(definitions)).save()
+        word_id = int(request.POST['id'])
+        WordCard.objects.create(card_type="ME", deck_id=int(deck_id), word_id=word_id).save()
 
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -70,11 +63,12 @@ def get_card_question(request):
     if request.method == "POST":
         card_id = request.POST.get('card_id')
         card = WordCard.objects.get(id=int(card_id))
-        question = sendQuestionRequest(card.word)
+        word_dict = card.word
+        question = sendQuestionRequest(word_dict.word)
         data = {
             'question': question,
-            'word': card.word,
-            'content': card.content,
+            'word': word_dict.word,
+            'content': word_dict.kanji,
         }
         return JsonResponse(data)
     else:
@@ -113,9 +107,9 @@ def get_card_answer(request):
         card = WordCard.objects.get(id=card_id)
 
         data = {'explanation': feedback['explanation'],
-                'correct':  feedback['correct'],
-                'card-title': card.word,
-                'card-content': ', '.join(ast.literal_eval(card.content))}
+                'correct':  json.dumps(bool(feedback['correct'])),
+                'card-title': card.word.word,
+                'card-content': card.word.kanji}
         return JsonResponse(data)
     else:
         return HttpResponseBadRequest('Invalid request')

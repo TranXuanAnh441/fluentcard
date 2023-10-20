@@ -31,6 +31,7 @@ def word_search(request):
 @login_required
 def word_detail(request, slug):
     slug = urllib.parse.unquote(slug)
+    id = -1
     try:
         result = WordDict.objects.get(word=slug)
         word = {}
@@ -39,6 +40,7 @@ def word_detail(request, slug):
         word['hiragana'] = result.hiragana
         word['definitions'] = ast.literal_eval(result.definitions)
         img = result.image
+        id = result.id
         if img == '' or img is None:
             img = get_image(slug)
             result.image = img
@@ -46,8 +48,9 @@ def word_detail(request, slug):
     except:
         word = jisho_word_search(slug)[0]
         img = get_image(slug)
-        WordDict.objects.create(word = word['slug'], definitions = str(word['definitions']), 
+        instance = WordDict.objects.create(word = word['slug'], definitions = str(word['definitions']), 
                                 hiragana= word['hiragana'], kanji=word['kanji'], image=img).save()
+        id = instance.id
 
     sentences = [sentence for sentence in SentenceDict.objects.filter(word=slug)[:5]]
     if len(sentences) > 0:
@@ -63,7 +66,8 @@ def word_detail(request, slug):
 
     data = {
         'word': word,
-        'word_added': WordCard.objects.filter(word=slug).count() > 0,
+        'id': id,
+        'word_added': WordCard.objects.filter(word=id).count() > 0,
         'image_url': img,
         'decks': Deck.objects.filter(user=request.user)
     }

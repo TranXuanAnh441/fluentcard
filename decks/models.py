@@ -1,9 +1,8 @@
 from django.db import models
 import datetime
-from django.utils import timezone
 from django.conf import settings
 from django.db.models import Q
-from dictionary.models import Word
+from dictionary.models import WordDict
 
 # Create your models here.
 class Deck(models.Model):
@@ -33,7 +32,7 @@ class Deck(models.Model):
     def learnt_card_num(self):
         return WordLearnHistory.objects.filter(card__deck=self, learnt_date=datetime.date.today()).count()
 
-class WordCard(Word):
+class WordCard(models.Model):
     class CardTypes(models.TextChoices):
         ME = "ME", "meanings"
         KJ = "KJ", "kanji"
@@ -46,7 +45,7 @@ class WordCard(Word):
         max_length=2,
         choices=CardTypes.choices,
     )
-    content = models.CharField(max_length=500)
+    word = models.ForeignKey(WordDict,on_delete=models.CASCADE)
     deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     

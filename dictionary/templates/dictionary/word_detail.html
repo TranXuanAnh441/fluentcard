@@ -23,9 +23,7 @@
                         <option value="{{ deck.id }}">{{ deck.name }}</option>
                         {% endfor %}
                     </select>
-                    <input type="hidden" name='slug' value="{{ word.slug }}">
-                    <input type="hidden" name='definitions' value="{{ word.definitions }}">
-                    <input type="hidden" name='kanji' value="{{ word.kanji }}">
+                    <input type="hidden" name='id' value="{{ id }}">
                     <input type="submit" class="btn btn-primary" value="Add to deck">
                 </form>
             </div>

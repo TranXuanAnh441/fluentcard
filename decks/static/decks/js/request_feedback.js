@@ -15,13 +15,12 @@ function requestFeedback(request_feedback_url, cur_question, cur_answer, cur_car
         },
         success: (data) => {
             console.log(data);
-            correct = data['correct'] == 'True' || data['correct'] == 'true';
-            if (correct) {
+            if ((data['correct'] == 'True') || (data['correct'] == 'true')) {
                 $(input).css('border-color', 'green');
-                $(input).css('border-color', 'medium');
+                // $(input).css('border-color', 'medium');
             } else {
                 $(input).css('border-color', 'red');
-                $(input).css('border-color', 'medium');
+                // $(input).css('border-color', 'medium');
             }
             document.getElementById("feedback").textContent = data['explanation'];
             document.getElementById("card-title").textContent = data['card-title'];
