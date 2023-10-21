@@ -12,6 +12,8 @@ def jisho_word_search(input):
     if not r:
         return data
     for d in r.data:
+        if any(char.isdigit() for char in d.slug):
+            continue
         word = {}
         word['slug'] = d.slug
         word['hiragana'] = d.japanese[0].reading
