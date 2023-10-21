@@ -37,6 +37,10 @@ body {
     margin-top: 30px;
 }
 
+form { font-size: 1.2em; }
+
+input[type='text'] { font-size: 0.8em; }
+
 .blur {
     -webkit-filter: blur(4px);
 }
@@ -63,4 +67,9 @@ body {
 
 .card-title {
     font-size: 30px;
+}
+
+.alert {
+    color: red;
+    font-size: 1em;
 }
