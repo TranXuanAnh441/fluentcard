@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
-import random
-import ast
 from datetime import date
 from supermemo2 import SMTwo
-from .models import Deck, WordCard, WordLearnHistory
+import random
+import ast
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
+from django.db.models import Count
+from .models import Deck, WordCard, WordLearnHistory
 from .utils import *
 
 # Create your views here.
@@ -121,3 +122,29 @@ def get_card_answer(request):
         return JsonResponse(data)
     else:
         return HttpResponseBadRequest('Invalid request')
+    
+
+@login_required
+def progress(request):
+    date_progress_x = []
+    date_progress_y = []
+    card_easiness_progress_x = []
+    card_easiness_progress_y = []
+    
+    date_progress = WordLearnHistory.objects.filter(card__deck__user = request.user).values('learnt_date').annotate(Count('card'))
+    card_easiness_progress = WordLearnHistory.objects.filter(card__deck__user = request.user).values('easiness').annotate(Count('card'))
+    
+    for q in date_progress:
+        date_progress_x.append(q['learnt_date'].strftime("%d-%m-%Y"))
+        date_progress_y.append(q['card__count'])
+    for q in card_easiness_progress:
+        card_easiness_progress_x.append(q['easiness'])
+        card_easiness_progress_y.append(q['card__count'])
+    
+    data = {
+        'date_progress_x': json.dumps(date_progress_x),
+        'date_progress_y': json.dumps(date_progress_y),
+        'card_easiness_progress_x': json.dumps(card_easiness_progress_x),
+        'card_easiness_progress_y': json.dumps(card_easiness_progress_y),
+    }
+    return render(request, 'decks/progress.html', data)

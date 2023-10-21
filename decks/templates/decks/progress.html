@@ -1,0 +1,81 @@
+{% extends "config/base.html" %}
+
+{% block content %}
+<div class="container justify-content-center">
+    <h1> Your learning progress </h1>
+    <canvas id="lineChart" style="width:100%;"></canvas>
+    <canvas id="pieChart" style="width:100%;"></canvas>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    const date_progress_x = JSON.parse('{{ date_progress_x|safe }}');
+    const date_progress_y = JSON.parse('{{ date_progress_y|safe }}').map(num => Number(num));;
+    const card_easiness_progress_x = JSON.parse('{{ card_easiness_progress_x|safe }}');
+    const card_easiness_progress_y = JSON.parse('{{ card_easiness_progress_y|safe }}').map(num => Number(num));;
+
+    new Chart("lineChart", {
+        type: "line",
+        data: {
+            labels: date_progress_x,
+            datasets: [{
+                fill: false,
+                lineTension: 0,
+                backgroundColor: "rgba(0,0,255,1.0)",
+                borderColor: "rgba(0,0,255,0.1)",
+                data: date_progress_y
+            }]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        min: Math.min(...date_progress_y) / 2,
+                        max: Math.max(...date_progress_y) * 1.5,
+                        beginAtZero: true,
+                        callback: function (value) {
+                            if (value % 1 === 0) {
+                                return value;
+                            }
+                        }
+                    }
+                }],
+            },
+            title: {
+                display: true,
+                text: "Number of Cards you Learn"
+            }
+        }
+    });
+
+    var barColors = [
+        "#b91d47",
+        "#00aba9",
+        "#2b5797",
+        "#e8c3b9",
+        "#1e7145"
+    ];
+
+    new Chart("pieChart", {
+        type: "pie",
+        data: {
+            labels: card_easiness_progress_x,
+            datasets: [{
+                backgroundColor: barColors,
+                data: card_easiness_progress_y
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "Easiness of cards"
+            }
+        }
+    });
+</script>
+{% endblock %}

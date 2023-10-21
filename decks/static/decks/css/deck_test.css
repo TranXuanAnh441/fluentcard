@@ -82,7 +82,6 @@
     margin-top: 10px;
     width: 70%;
     height: 100%;
-    /* margin-bottom: 60px; */
 }
 
 .form__field {
@@ -129,7 +128,6 @@
     font-weight: 500;
     border-width: 2px;
     border-color: blue;
-    /* border-image: blue; */
     border-image-slice: 1;
 }
 
