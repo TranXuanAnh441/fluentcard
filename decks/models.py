@@ -1,5 +1,5 @@
 from django.db import models
-import datetime
+from datetime import date
 from django.conf import settings
 from django.db.models import Q
 from dictionary.models import WordDict
@@ -20,17 +20,16 @@ class Deck(models.Model):
     
     @property
     def card_for_review_num(self):
-        today_review_cards = WordLearnHistory.objects.filter(
-            Q(card__deck=self, next_date=datetime.date.today()) | Q(card__deck=self, learnt_date=datetime.date.today()) 
-        ).count()
-        cards =  WordCard.objects.filter(deck=self).all()
-        learnt_card_list = list(WordLearnHistory.objects.filter(card_id__in=cards).values_list('card_id', flat=True))
-        first_visit_cards = len([card.id for card in cards if card.id not in learnt_card_list])
-        return first_visit_cards + today_review_cards
+        # today_review_cards = WordLearnHistory.objects.filter(
+        #     Q(card__deck=self, next_date=date.today()) | Q(card__deck=self, learnt_date=date.today()) 
+        # ).count()
+        # new_cards = WordCard.objects.filter(deck=self, word_learn_history=None).count()
+        # return new_cards + today_review_cards
+        return WordCard.objects.filter(deck=self).count()
     
     @property
     def learnt_card_num(self):
-        return WordLearnHistory.objects.filter(card__deck=self, learnt_date=datetime.date.today()).count()
+        return WordLearnHistory.objects.filter(card__deck=self, learnt_date=date.today()).count()
 
 class WordCard(models.Model):
     class CardTypes(models.TextChoices):
@@ -50,7 +49,7 @@ class WordCard(models.Model):
     created_at = models.DateField(auto_now=True)
     
 class WordLearnHistory(models.Model):
-    card = models.ForeignKey(WordCard,on_delete=models.CASCADE)
+    card = models.ForeignKey(WordCard, related_name='word_learn_history', on_delete=models.CASCADE)
     learnt_date = models.DateField(auto_now=True)
     easiness = models.IntegerField(default=1)
     interval = models.IntegerField(default=1)

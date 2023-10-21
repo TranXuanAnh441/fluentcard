@@ -27,7 +27,7 @@ load_dotenv(dotenv_path)
 SECRET_KEY = 'django-insecure-8-9gwzltxtqo*#+yy3%w!vg1r+!+0(fi8gcvg53#7n+bcwsc6h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.vercel.app', '.now.sh']
 
@@ -93,6 +93,13 @@ DATABASES = {
         'PORT': os.environ.get("PORT"),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

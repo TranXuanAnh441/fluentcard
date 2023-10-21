@@ -5,7 +5,7 @@ import ast
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
-from django.db.models import Count
+from django.db.models import Count, Q
 from .models import Deck, WordCard, WordLearnHistory
 from .utils import *
 
@@ -43,13 +43,10 @@ def add_card(request):
 
 @login_required
 def deck_test(request, deck_id):
-    cards = WordCard.objects.filter(deck_id=deck_id).all()
-    learnt_card_list = list(WordLearnHistory.objects.filter(
-        card_id__in=cards).values_list('card_id', flat=True))
-    first_visit_cards = [
-        card.id for card in cards if card.id not in learnt_card_list]
+    first_visit_cards = list(WordCard.objects.filter(deck_id=deck_id, word_learn_history=None).values_list('id', flat=True))
+    learnt_cards = list(WordLearnHistory.objects.filter(card__deck_id=deck_id, learnt_date=date.today()).values_list('card_id', flat=True))
     today_review_cards = list(WordLearnHistory.objects.filter(
-        card_id__in=cards, next_date=date.today()).values_list('card_id', flat=True))
+        card__deck_id=deck_id, next_date=date.today()).exclude(card_id__in=learnt_cards).values_list('card_id', flat=True))
     arr = first_visit_cards + today_review_cards
     if len(arr) == 0:
         redirect('deck_list')
@@ -82,11 +79,10 @@ def get_card_answer(request):
     if request.method == "POST":
         question = request.POST.get('question')
         answer = request.POST.get('answer')
-        card_id = request.POST.get('card_id')
+        card_id = int(request.POST.get('card_id'))
         time = int(request.POST.get('time')[:-1])
         quality = 1
         feedback = sendAnswerRequest(question, answer)
-        print(feedback)
         correct = (feedback['correct'] == "True") or (feedback['correct'] == 'true')
         if correct:
             quality += 1
@@ -97,18 +93,15 @@ def get_card_answer(request):
                     if time >= 20:
                         quality += 1
 
-        review_history = WordLearnHistory.objects.filter(
-            card_id=int(card_id)).order_by('-learnt_date')
+        review_history = WordLearnHistory.objects.filter(card_id=int(card_id)).order_by('-learnt_date')
         if review_history.count() == 0:
             review = SMTwo.first_review(quality)
-            WordLearnHistory.objects.create(card_id=int(
-                card_id), first_visit=True, easiness=review.easiness, interval=review.interval, next_date=review.review_date).save()
+            WordLearnHistory.objects.create(card_id=card_id, first_visit=True, easiness=review.easiness, interval=review.interval, next_date=review.review_date).save()
         else:
             last_review = review_history[0]
-            review = SMTwo(float(last_review.easiness),
-                           last_review.interval, 1).review(quality)
-            WordLearnHistory.objects.create(card_id=int(
-                card_id), easiness=review.easiness, interval=review.interval, next_date=review.review_date).save()
+            print(card_id)
+            review = SMTwo(float(last_review.easiness), last_review.interval, 1).review(quality)
+            WordLearnHistory.objects.create(card_id=card_id, easiness=review.easiness, interval=review.interval, next_date=review.review_date).save()
         word_dict = WordCard.objects.get(id=card_id).word
 
         data = {

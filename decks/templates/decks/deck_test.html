@@ -52,11 +52,11 @@
 <script src="{% static 'decks/js/request_feedback.js' %}"></script>
 <script>
   let card_counter = 0;
+  let countdown;
   const request_question_url = "{% url 'get_card_question' %}";
   const request_feedback_url = "{% url 'get_card_answer' %}";
   const data = JSON.parse('{{ card_ids|safe }}');
   const timeLeft = document.getElementsByClassName("time-left")[0];
-  // let o = {countdown: NaN} ;
 
   if (data.length <= 1) {
     document.querySelector('#next_card').disabled = true;
