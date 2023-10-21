@@ -1,4 +1,4 @@
-function requestQuestion(request_question_url, cur_card_id, question_num) {
+function requestQuestion(request_question_url, cur_card_id, question_num, countDown) {
     $.ajax({
         url: request_question_url,
         type: "POST",
@@ -11,7 +11,6 @@ function requestQuestion(request_question_url, cur_card_id, question_num) {
             "X-CSRFToken": getCookie("csrftoken"),
         },
         success: (data) => {
-            console.log(data);
             const question_data = data['question'];
             document.getElementById("question").textContent = question_data['question'];
             document.getElementById("number-of-question").textContent =
@@ -27,6 +26,7 @@ function requestQuestion(request_question_url, cur_card_id, question_num) {
                     `<label for="answer" class="form__label">Your answer: </label>
                 <input type="input" class="form__field" onkeydown="submitAnswer(this)" placeholder="Your answer" name="answer" id='answer' required/>`
             }
+            countDown();
         },
         error: (error) => {
             console.log(error);

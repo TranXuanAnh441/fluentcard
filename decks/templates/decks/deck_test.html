@@ -56,7 +56,7 @@
   const request_feedback_url = "{% url 'get_card_answer' %}";
   const data = JSON.parse('{{ card_ids|safe }}');
   const timeLeft = document.getElementsByClassName("time-left")[0];
-  let countdown;
+  // let o = {countdown: NaN} ;
 
   if (data.length <= 1) {
     document.querySelector('#next_card').disabled = true;
@@ -73,9 +73,8 @@
     }, 1000);
   }
 
-  window.onload = function () {
-    countdown = requestQuestion(request_question_url, data[card_counter], data.length, timeLeft);
-    countDown();
+  window.onload = function() {
+    requestQuestion(request_question_url, data[card_counter], data.length, countDown);
   };
 
   function checker(e) {
@@ -120,8 +119,7 @@
     let cur_card_id = data[card_counter];
     document.getElementById("question_form").innerHTML = '';
     document.getElementById("question").textContent = "Question: Loading ...";
-    requestQuestion(request_question_url, cur_card_id, data.length);
-    countDown();
+    requestQuestion(request_question_url, cur_card_id, data.length, countDown);
   }
 </script>
 {% endblock %}
