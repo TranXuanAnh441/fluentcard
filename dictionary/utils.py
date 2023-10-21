@@ -103,7 +103,7 @@ def full_sentence_audio(sentence):
 
     headers = {
         'Authorization': os.environ.get("AUTHORIZATION"),
-        'X-User-ID': os.environ.get("X-USER-ID"),
+        'X-User-ID': os.environ.get("X_USER_ID"),
         'Content-Type': 'application/json'
     }
     response = json.loads(requests.request(
@@ -113,7 +113,7 @@ def full_sentence_audio(sentence):
     headers = {
         "content-type": 'application/json',
         "AUTHORIZATION": os.environ.get("AUTHORIZATION"),
-        "X-USER-ID": os.environ.get("X-USER-ID")
+        "X-USER-ID": os.environ.get("X_USER_ID")
     }
     converted = False
     while not converted:
