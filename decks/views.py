@@ -14,7 +14,7 @@ from .utils import *
 @login_required
 def deck_list(request):
     learnt_card_num = WordLearnHistory.objects.filter(
-        learnt_date=date.today()).count()
+        card__deck__user=request.user, learnt_date=date.today()).count()
     decks = Deck.objects.filter(user=request.user)
     data = {
         'decks': decks,
