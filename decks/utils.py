@@ -22,7 +22,7 @@ def sendQuestionRequest(word):
             {'role': 'user', 'content': str(message)},
         )
         chat = openai.ChatCompletion.create(
-            model="ft:gpt-3.5-turbo-0613:personal::89TPsyE8", messages=question_messages
+            model=os.environ.get("MODEL"), messages=question_messages
         )
     reply = chat.choices[0].message.content
     try:

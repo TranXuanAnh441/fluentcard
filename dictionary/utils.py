@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup, Tag
 import requests
 import json
+import os
 import urllib
 from jisho_api.word import Word
 from bing_image_urls import bing_image_urls
@@ -74,3 +75,48 @@ def get_image(word):
     if len(image_urls) > 0:
         image_url = image_urls[0]
     return image_url
+
+
+def jisho_word_audio(word):
+    URL = 'https://jisho.org/word/'
+    url = URL + word
+    url = url.replace(' ', '')
+    r = requests.get(url).content
+    soup = BeautifulSoup(r, "html.parser")
+    try:
+        t = soup.find_all("source", {'type': "audio/mpeg"})[0]
+    except:
+        return full_sentence_audio(word)
+    return t['src']
+
+
+def full_sentence_audio(sentence):
+    url = "https://play.ht/api/v1/convert"
+
+    payload = json.dumps({
+        "voice": "ja-JP_EmiV3Voice",
+        "content": [
+            sentence
+        ],
+        "title": "japanese sentence pronunciation"
+    })
+
+    headers = {
+        'Authorization': os.environ.get("AUTHORIZATION"),
+        'X-User-ID': os.environ.get("X-USER-ID"),
+        'Content-Type': 'application/json'
+    }
+    response = json.loads(requests.request(
+        "POST", url, headers=headers, data=payload).text)
+    url = "https://play.ht/api/v1/articleStatus/?transcriptionId=" + \
+        response["transcriptionId"]
+    headers = {
+        "content-type": 'application/json',
+        "AUTHORIZATION": os.environ.get("AUTHORIZATION"),
+        "X-USER-ID": os.environ.get("X-USER-ID")
+    }
+    converted = False
+    while not converted:
+        response = json.loads(requests.get(url, headers=headers).text)
+        converted = response['converted']
+    return response['audioUrl']
