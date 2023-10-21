@@ -17,19 +17,6 @@ class Deck(models.Model):
     @property
     def card_num(self):
         return WordCard.objects.filter(deck=self).count()
-    
-    @property
-    def card_for_review_num(self):
-        # today_review_cards = WordLearnHistory.objects.filter(
-        #     Q(card__deck=self, next_date=date.today()) | Q(card__deck=self, learnt_date=date.today()) 
-        # ).count()
-        # new_cards = WordCard.objects.filter(deck=self, word_learn_history=None).count()
-        # return new_cards + today_review_cards
-        return WordCard.objects.filter(deck=self).count()
-    
-    @property
-    def learnt_card_num(self):
-        return WordLearnHistory.objects.filter(card__deck=self, learnt_date=date.today()).count()
 
 class WordCard(models.Model):
     class CardTypes(models.TextChoices):
@@ -45,7 +32,7 @@ class WordCard(models.Model):
         choices=CardTypes.choices,
     )
     word = models.ForeignKey(WordDict,on_delete=models.CASCADE)
-    deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
+    deck = models.ForeignKey(Deck, related_name='word_card', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     
 class WordLearnHistory(models.Model):
