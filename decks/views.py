@@ -110,7 +110,6 @@ def get_card_answer(request):
                                             interval=review.interval, next_date=review.review_date).save()
         else:
             last_review = review_history[0]
-            print(card_id)
             review = SMTwo(float(last_review.easiness),
                            last_review.interval, 1).review(quality)
             WordLearnHistory.objects.create(

@@ -18,15 +18,14 @@ def word_search(request):
         data['searchWord'] = search
         words = jisho_word_search(search)
         data['words'] = words
-        word_objs = []
 
         if len(words) > 0:
-            if WordDict.objects.filter(word=words[0]['slug']).count() == 0:
+            word_objs = []
+            if WordDict.objects.filter(word__contains=words[0]['slug']).count() == 0:
                 for word in words:
                     word_objs.append(WordDict(word = word['slug'], definitions = str(word['definitions']), hiragana= word['hiragana'], kanji=word['kanji']))
-        
-        if len(words) > 0:
-            WordDict.objects.bulk_create([ obj for obj in word_objs ])
+                WordDict.objects.bulk_create([ obj for obj in word_objs ])
+
     return render(request, 'dictionary/word_search.html', data)
 
 
