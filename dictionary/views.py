@@ -10,6 +10,7 @@ from .models import WordDict, SentenceDict
 
 # Create your views here.
 
+
 @login_required
 def word_search(request):
     search = request.GET.get('search')
@@ -21,10 +22,12 @@ def word_search(request):
 
         if len(words) > 0:
             word_objs = []
-            if WordDict.objects.filter(word__contains=words[0]['slug']).count() == 0:
+            slugs = [word['slug'] for word in words]
+            if WordDict.objects.filter(word__in=slugs).count() == 0:
                 for word in words:
-                    word_objs.append(WordDict(word = word['slug'], definitions = str(word['definitions']), hiragana= word['hiragana'], kanji=word['kanji']))
-                WordDict.objects.bulk_create([ obj for obj in word_objs ])
+                    word_objs.append(WordDict(word=word['slug'], definitions=str(
+                        word['definitions']), hiragana=word['hiragana'], kanji=word['kanji']))
+                WordDict.objects.bulk_create([obj for obj in word_objs])
 
     return render(request, 'dictionary/word_search.html', data)
 
@@ -48,22 +51,26 @@ def word_detail(request, slug):
             result.save()
     except:
         word = jisho_word_search(slug)[0]
+        print(word)
         img = get_image(slug)
-        instance = WordDict.objects.create(word = word['slug'], definitions = str(word['definitions']), 
-                                hiragana= word['hiragana'], kanji=word['kanji'], image=img).save()
-        id = instance.id
+        obj = WordDict.objects.create(word=word['slug'], definitions=str(word['definitions']),
+                                     hiragana=word['hiragana'], kanji=word['kanji'], image=img)
+        obj.save()
+        id = obj.id
 
-    sentences = [sentence for sentence in SentenceDict.objects.filter(word=slug)[:5]]
+    sentences = [sentence for sentence in SentenceDict.objects.filter(word=slug)[
+        :5]]
     if len(sentences) > 0:
         word['sentences'] = [sentence for sentence in sentences]
-    else: 
+    else:
         sentences = jisho_sentence_search(slug)
         word['sentences'] = sentences
         sentence_objs = []
         for sentence in sentences:
-            sentence_objs.append(SentenceDict(word=slug, jp_sentence = sentence['jp_sentence'], en_sentence = sentence['en_sentence']))
+            sentence_objs.append(SentenceDict(
+                word=slug, jp_sentence=sentence['jp_sentence'], en_sentence=sentence['en_sentence']))
         if len(sentence_objs) > 0:
-            SentenceDict.objects.bulk_create([ obj for obj in sentence_objs ])
+            SentenceDict.objects.bulk_create([obj for obj in sentence_objs])
 
     data = {
         'word': word,
