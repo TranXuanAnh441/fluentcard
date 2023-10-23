@@ -13,8 +13,8 @@
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
     display: flex;
     max-width: 100%;
-    left: 50%;
-    margin: 20px;
+    /* left: 50%; */
+    margin: 10px;
     overflow: hidden;
 }
 
@@ -32,13 +32,13 @@
 
 .deck-preview {
     background-color: var(--deep_purple);
-    color: #fff;
+    color: white;
     padding: 30px;
     max-width: 250px;
 }
 
 .deck-preview a {
-    color: #fff;
+    color: white;
     display: inline-block;
     font-size: 12px;
     opacity: 0.6;
@@ -54,10 +54,10 @@
 
 .progress-container {
     position: absolute;
-    top: 30px;
+    top: 35px;
     right: 30px;
     text-align: right;
-    width: 150px;
+    width: 30%;
 }
 
 .progress {
@@ -91,4 +91,23 @@
 #learn-deck-btn:hover {
     /* border: 1px solid var(--purple); */
     color: white;
+}
+
+@media only screen and (max-width: 600px){
+    .deck {
+        height: 150px;
+    }
+    .btn {
+        font-size: 12px;
+        padding: 10px 20px;
+    }
+    .deck-info {
+        padding: 20px;
+    }
+    .deck-preview {
+        padding: 20px;
+    }
+    .deck-preview a {
+        margin-top: 20px;
+    }
 }
