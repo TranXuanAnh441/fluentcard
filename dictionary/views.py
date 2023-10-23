@@ -51,7 +51,6 @@ def word_detail(request, slug):
             result.save()
     except:
         word = jisho_word_search(slug)[0]
-        print(word)
         img = get_image(slug)
         obj = WordDict.objects.create(word=word['slug'], definitions=str(word['definitions']),
                                      hiragana=word['hiragana'], kanji=word['kanji'], image=img)

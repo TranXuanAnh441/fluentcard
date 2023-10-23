@@ -25,8 +25,13 @@ def sendQuestionRequest(word):
             model=os.environ.get("MODEL"), messages=question_messages
         )
     reply = chat.choices[0].message.content
+    print(reply)
     try:
-        return ast.literal_eval(reply)
+        question = ast.literal_eval(reply)
+        if question['question'] and question['question'] != '':
+            return question
+        else:
+            raise KeyError
     except:
         sendQuestionRequest(word)
 
@@ -42,6 +47,11 @@ def sendAnswerRequest(question, answer):
         )
         reply = chat.choices[0].message.content
     try:
-        return json.loads(reply)
+        feedback = json.loads(reply)
+        print(feedback)
+        if feedback['correct'] and feedback['explanation']:
+            return feedback
+        else:
+            raise KeyError
     except:
         return sendAnswerRequest(question, answer)
