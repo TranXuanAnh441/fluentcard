@@ -20,9 +20,9 @@ def word_search(request):
         data['words'] = words
         word_objs = []
 
-        if WordDict.objects.filter(word=words[0]['slug']).count() == 0:
-            for word in words:
-                if word['hiragana'] and word['kanji'] and word['definitions']:
+        if len(words) > 0:
+            if WordDict.objects.filter(word=words[0]['slug']).count() == 0:
+                for word in words:
                     word_objs.append(WordDict(word = word['slug'], definitions = str(word['definitions']), hiragana= word['hiragana'], kanji=word['kanji']))
         
         if len(words) > 0:

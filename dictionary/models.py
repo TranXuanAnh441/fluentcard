@@ -14,6 +14,11 @@ class WordDict(Word):
     created_at = models.DateField(auto_now_add=True)
     image = models.URLField(max_length = 200, null=True) 
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['word'], name="word_unique")
+        ]
+
 class SentenceDict(Word):
     en_sentence = models.CharField(max_length=1000)
     jp_sentence = models.CharField(max_length=1000)
