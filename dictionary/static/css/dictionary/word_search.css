@@ -170,3 +170,24 @@ ul .meaning i {
 ul .content::-webkit-scrollbar {
     width: 0px;
 }
+
+@media only screen and (max-width: 600px){
+    .wrapper {
+        width: 400px;
+    }
+    .card {
+        width: 80%;
+        margin: 10px;
+    }
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 601px){
+    .card {
+        width: 45%;
+        margin: 5px;
+    }
+    .cards {
+        padding: 5px;
+        margin: 5px;
+    }
+}
