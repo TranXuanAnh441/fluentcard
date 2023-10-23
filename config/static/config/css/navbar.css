@@ -29,10 +29,20 @@
     text-decoration: none;
     color: var(--deep_purple);
     font-weight: bold;
-    padding: 7px 40px 7px 12px;
+    padding: 5px 30px 5px 10px;
     font-size: 16px;
 }
 
 .main-header__item a:hover {
     color: var(--yellow);
+}
+
+@media only screen and (max-width: 600px){
+    .main-header__item a {
+        padding: 5px 10px 5px 10px;
+        font-size: 15px;
+    }
+    .main-header__item {
+        margin: 0rem;
+    }
 }
