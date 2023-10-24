@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.db.models import Count, Q
 from .models import Deck, WordCard, WordLearnHistory
+from dictionary.models import WordDict
 from .utils import *
 
 # Create your views here.
@@ -67,9 +68,18 @@ def deck_test(request, deck_id):
     return render(request, 'decks/deck_test.html', data)
 
 
+@login_required
+def deck_cards(request, deck_id):
+    cards = WordDict.objects.filter(wordcard__deck_id = deck_id)
+    data = {'cards': cards}
+    return render(request, 'decks/deck_cards.html', data)
+    
+
 def get_card_question(request):
     if request.method == "POST":
         card_id = request.POST.get('card_id')
+        if not card_id:
+            return redirect('deck_list')
         card = WordCard.objects.get(id=int(card_id))
         word_dict = card.word
         question = sendQuestionRequest(word_dict.word)
