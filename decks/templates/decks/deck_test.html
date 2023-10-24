@@ -73,7 +73,7 @@
     }, 1000);
   }
 
-  window.onload = function() {
+  window.onload = function () {
     requestQuestion(request_question_url, data[card_counter], data.length, countDown);
   };
 
@@ -119,6 +119,13 @@
     let cur_card_id = data[card_counter];
     document.getElementById("question_form").innerHTML = '';
     document.getElementById("question").textContent = "Question: Loading ...";
+    document.getElementById("feedback").textContent = data['explanation'];
+    document.getElementsByClassName('card-title')[0].style.borderBottom = '';
+    document.getElementsByClassName('spelling')[0].style.borderLeft = '';
+    document.getElementById("word-slug").innerHTML = '';
+    document.getElementById("word-kanji").textContent = '';
+    document.getElementById("word-hiragana").textContent = '';
+    document.getElementById("word-definitions").textContent = '';
     requestQuestion(request_question_url, cur_card_id, data.length, countDown);
   }
 </script>
