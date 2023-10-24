@@ -1,0 +1,62 @@
+{% extends "config/base.html" %}
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type='text/css' href="{% static 'css/dictionary/word_search.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div>
+    <div class="search_results">
+        <ul class="cards">
+            {% for card in cards%}
+            <div class="card">
+                <div>
+                    <h3 class="card-title">{{ card.word }}</h3>
+                    <div class="card-content">
+                        <div class="spelling">
+                            <div class="details">
+                                <p>{{ card.kanji }}</p>
+                                <span>{{ card.hiragana }}</span>
+                            </div>
+                        </div>
+                        <ul>
+                            <li class="meaning">
+                                <!-- <span>{{ definition.grammar }}</span> -->
+                                <p>{{ card.definitions }}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="btn-link-wrapper d-inline-block ml-2">
+                        <a href="{% url 'word_detail' slug=card.word %}" class="btn-link">Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  const searchInput = document.querySelector("#searchInput");
+  const container = document.querySelector('.cards');
+  const masonry = new Masonry(container, {
+    itemSelector: '.card',
+    columnWidth: 30,
+  });
+
+//   function deleteInput() {
+//     searchInput.value = "";
+//   }
+
+//   $('#searchInput').keypress(function (e) {
+//     if (e.which == '13') {
+//       window.location =  "{% url 'word_search' %}?search=" + searchInput.value; 
+//     }
+//   })
+</script>
+{% endblock %}

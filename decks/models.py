@@ -1,7 +1,5 @@
 from django.db import models
-from datetime import date
 from django.conf import settings
-from django.db.models import Q
 from dictionary.models import WordDict
 
 # Create your models here.
