@@ -26,6 +26,7 @@ urlpatterns = [
     path('dictionary/', include('dictionary.urls')),
     path('users/', include('users.urls')),
     path('decks/', include('decks.urls')),
+    path('roleplay/', include('roleplay.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

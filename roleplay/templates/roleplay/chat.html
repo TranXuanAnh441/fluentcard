@@ -1,0 +1,122 @@
+{% extends "config/base.html" %}
+
+{% load static %}
+{% block style %}
+<link rel="stylesheet" type='text/css' href="{% static 'roleplay/css/chat.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <aside>
+        <header>
+            <input type="text" placeholder="search">
+        </header>
+        <ul>
+            <!-- <li>
+                <div>
+                    <h2>Previous chats</h2>
+                </div>
+            </li> -->
+        </ul>
+    </aside>
+
+    <div class="chat_window">
+        <header>
+            <div class="d-flex">
+                <h2 class="d-inline-block">{{ prompt_title }}</h2>
+                <a class="d-inline-block end" href="">End <i class="fa fa-sign-out"></i></a>
+            </div>
+        </header>
+
+        <ul id="chat">
+            <li class="you">
+                <div class="entete">
+                    <span class="status green"></span>
+                    <h2>Chat GPT</h2>
+                    <h3>{{ current_time }}</h3>
+                </div>
+                <div class="triangle"></div>
+                <div class="message" id="first_message">
+                    {{ first_message }}
+                </div>
+            </li>
+            <li class="me">
+                <div class="entete">
+                    <h3>{{ current_time }}</h3>
+                    <h2>User</h2>
+                    <span class="status blue"></span>
+                </div>
+                <div class="triangle"></div>
+                <div class="message">
+                    <p>Start talking in Japanese with the bot and practice your kaiwa skills.</p>
+                </div>
+            </li>
+        </ul>
+        <footer>
+            <textarea placeholder="Type your message" id="msgText"></textarea>
+            <div class="d-flex submit">
+                <a class="d-inline-block" onclick="sendMsg()">Send</a>
+                <a class="d-inline-block sound">Voice <i class="fa fa-microphone"></i></a>
+            </div>
+        </footer>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    const decoder = new TextDecoder();
+    const encoder = new TextEncoder();
+    const first_msg = document.getElementById('first_message').textContent;
+
+    const tokenize = (first_msg) => {
+        let myArray = JSON.parse(first_msg);
+        let msg_str = ''
+        for (let i = 0; i < myArray.length; i++) {
+            let byteArray = encoder.encode(myArray[i]);
+            let decoded_str = decoder.decode(byteArray);
+            let href = "{% url 'word_detail' slug=12345 %}".replace(/12345/, decoded_str);
+            msg_str += `<a href=${href}> ${decoded_str} </a> `;
+        }
+        msg_str += '<i class="fa fa-volume-up"></i>'
+        return msg_str
+    }
+
+    // document.getElementById('first_message').innerHTML = tokenize(first_msg);
+
+    const sendMsg = () => {
+        const msgText = document.getElementById('msgText').value;
+        document.getElementById('msgText').value = '';
+        const chat = document.getElementById('chat');
+        const meChatBox = document.getElementsByClassName('me')[0];
+        const newMeChat = meChatBox.cloneNode(true);
+        chat.appendChild(newMeChat);
+        let messageLength = document.getElementsByClassName('message').length;
+        document.getElementsByClassName('message')[messageLength - 1].textContent = msgText;
+
+        $.ajax({
+            url: "{% url 'get_chat_response' %}",
+            type: "POST",
+            dataType: "json",
+            data: {
+                "message": msgText,
+            },
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            success: (data) => {
+                console.log(data.response);
+                const youChatBox = document.getElementsByClassName('you')[0];
+                const newYouChat = youChatBox.cloneNode(true);
+                chat.appendChild(newYouChat);
+                let messageLength = document.getElementsByClassName('message').length;
+                document.getElementsByClassName('message')[messageLength - 1].innerHTML = (data.response);
+            },
+            error: (error) => {
+                console.log(error);
+            }
+        })
+    }
+</script>
+{% endblock %}

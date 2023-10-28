@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.db.models import Count, Q
 from .models import Deck, WordCard, WordLearnHistory
 from dictionary.models import WordDict
-from .utils import *
+from .chatGPT_handler import *
 
 # Create your views here.
 

@@ -27,7 +27,7 @@ load_dotenv(dotenv_path)
 SECRET_KEY = 'django-insecure-8-9gwzltxtqo*#+yy3%w!vg1r+!+0(fi8gcvg53#7n+bcwsc6h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.vercel.app', '.now.sh']
 
@@ -41,12 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'config',
     'dictionary',
     'users',
-    'crispy_forms',
-    'crispy_bootstrap5',
     'decks',
+    'roleplay',
 ]
 
 MIDDLEWARE = [

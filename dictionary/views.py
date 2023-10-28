@@ -5,11 +5,10 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
 from decks.models import Deck, WordCard
-from .utils import *
+from config.utils import *
 from .models import WordDict, SentenceDict
 
 # Create your views here.
-
 
 @login_required
 def word_search(request):

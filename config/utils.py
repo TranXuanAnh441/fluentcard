@@ -1,10 +1,12 @@
-from bs4 import BeautifulSoup, Tag
 import requests
 import json
 import os
 import urllib
+from bs4 import BeautifulSoup, Tag
 from jisho_api.word import Word
+from jisho_api.tokenize import Tokens
 from bing_image_urls import bing_image_urls
+
 
 def jisho_word_search(input):
     data = []
@@ -122,3 +124,11 @@ def full_sentence_audio(sentence):
         response = json.loads(requests.get(url, headers=headers).text)
         converted = response['converted']
     return response['audioUrl']
+
+
+def tokenize(str):
+    tokens = []
+    r = Tokens.request(str)
+    for t in r:
+        tokens.append(t.token)
+    return tokens
