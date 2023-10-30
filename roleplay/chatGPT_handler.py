@@ -12,29 +12,19 @@ You will start first, then please wait for user's response and reply one after a
 """
 
 second_message_prompt = """
-The prompt for roleplay is: {}. Please start first by sending a hello message.
+The prompt for roleplay is: {}. Please start the conversation first.
 """
 
 roleplay_messages = [
     {'role': 'system', 'content': first_message_prompt},
 ]
 
-def sendFirstChatMessageRequest(prompt_content):
-    message = second_message_prompt.format(prompt_content)
+def sendChatMessageRequest(message, first_message=False):
     if message:
+        if first_message:
+            message = second_message_prompt.format(message)
         roleplay_messages.append(
-            {'role': 'user', 'content': str(message)},
-        )
-        chat = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=roleplay_messages
-        )
-    reply = chat.choices[0].message.content
-    return reply
-
-def sendResponseChatMessageRequest(message):
-    if message:
-        roleplay_messages.append(
-            {'role': 'user', 'content': str(message)},
+            {'role': 'user', 'content': message},
         )
         chat = openai.ChatCompletion.create(
             model="gpt-3.5-turbo", messages=roleplay_messages

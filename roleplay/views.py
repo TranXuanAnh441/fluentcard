@@ -21,7 +21,7 @@ def prompt_list(request):
 @login_required
 def chat(request, prompt_id):
     prompt = RoleplayPrompt.objects.get(id=int(prompt_id))
-    first_message = sendFirstChatMessageRequest(prompt.description)
+    first_message = sendChatMessageRequest(prompt.description, first_message=True)
     # first_message = tokenize(first_message)
     # first_message = 'something something'
     data = {
@@ -35,7 +35,7 @@ def chat(request, prompt_id):
 def get_chat_response(request):
     if request.method == "POST":
         msg = request.POST.get('message')
-        message = sendResponseChatMessageRequest(msg)
+        message = sendChatMessageRequest(msg)
         # tokens = tokenize(message)
         data = {
             'response': message
