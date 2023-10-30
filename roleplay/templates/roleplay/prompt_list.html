@@ -3,14 +3,29 @@
 {% block content %}
 <div class="row">
     {% for prompt in prompts %}
-    <div class="col-lg-3 col-md-3 col-xs-3 thumb">
+    <div class="col-lg-3 col-md-3 col-xs-3 thumb mt-3 mb-3">
         <a class="thumbnail" href="{% url 'chat' prompt_id=prompt.id %}">
             <img class="img-responsive" src="{{ prompt.image }}" alt="">
         </a>
         <h3>{{ prompt.title }}</h3>
+        {% for i in start_num_range %}
+        {% if prompt.difficulty >= i %}
+        <span class="fa fa-star checked"></span>
+        {% else %}
+        <span class="fa fa-star"></span>
+        {% endif %}
+        {% endfor %}
         <p>{{ prompt.creator.username }}</p>
         <p>{{ prompt.description }}</p>
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+
+{% block style%}
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
 {% endblock %}

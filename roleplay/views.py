@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
@@ -13,7 +12,8 @@ from config.utils import *
 @login_required
 def prompt_list(request):
     data = {
-        'prompts': RoleplayPrompt.objects.all() 
+        'prompts': RoleplayPrompt.objects.all(),
+        'start_num_range': range(1, 4), 
     }
     return render(request, 'roleplay/prompt_list.html', data)
 
