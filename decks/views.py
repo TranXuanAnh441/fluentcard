@@ -55,10 +55,9 @@ def deck_test(request, deck_id):
     learnt_cards = list(WordLearnHistory.objects.filter(
         card__deck_id=deck_id, learnt_date=date.today()).values_list('card_id', flat=True))
     today_review_cards = list(WordLearnHistory.objects.filter(
-        card__deck_id=deck_id, next_date=date.today()).exclude(card_id__in=learnt_cards).values_list('card_id', flat=True))
+        card__deck_id=deck_id, next_date__lt=date.today()).exclude(card_id__in=learnt_cards).values_list('card_id', flat=True))
     arr = first_visit_cards + today_review_cards
-    if len(arr) == 0:
-        redirect('deck_list')
+
     random.shuffle(arr)
 
     data = {
