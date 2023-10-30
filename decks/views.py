@@ -18,9 +18,15 @@ def deck_list(request):
     learnt_card_num = WordLearnHistory.objects.filter(
         card__deck__user=request.user, learnt_date=date.today()).count()
     decks = Deck.objects.filter(user=request.user).annotate(
-        card_for_review_num=Count('word_card', distinct=True),
+        card_for_review_num=Count(
+            'word_card',
+            distinct=True
+        ),
         learnt_card_num=Count(
-            'word_card__word_learn_history', filter=Q(word_card__word_learn_history__learnt_date=date.today()), distinct=True)
+            'word_card__word_learn_history',
+            filter=Q(word_card__word_learn_history__learnt_date=date.today()),
+            distinct=True
+        )
     )
     data = {
         'decks': decks,
@@ -56,7 +62,7 @@ def deck_test(request, deck_id):
         card__deck_id=deck_id, learnt_date=date.today()).values_list('card_id', flat=True))
     today_review_cards = list(WordLearnHistory.objects.filter(
         card__deck_id=deck_id, next_date__lt=date.today()).exclude(card_id__in=learnt_cards).values_list('card_id', flat=True))
-    arr = first_visit_cards + today_review_cards
+    arr = (list(set(first_visit_cards + today_review_cards)))
 
     random.shuffle(arr)
 
@@ -69,10 +75,10 @@ def deck_test(request, deck_id):
 
 @login_required
 def deck_cards(request, deck_id):
-    cards = WordDict.objects.filter(wordcard__deck_id = deck_id)
+    cards = WordDict.objects.filter(wordcard__deck_id=deck_id)
     data = {'cards': cards}
     return render(request, 'decks/deck_cards.html', data)
-    
+
 
 def get_card_question(request):
     if request.method == "POST":
