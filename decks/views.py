@@ -76,7 +76,7 @@ def deck_test(request, deck_id):
 @login_required
 def deck_cards(request, deck_id):
     cards = WordDict.objects.filter(wordcard__deck_id=deck_id)
-    data = {'cards': cards}
+    data = {'cards': cards, 'deck_name': Deck.objects.get(id=deck_id).name }
     return render(request, 'decks/deck_cards.html', data)
 
 
