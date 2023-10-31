@@ -30,4 +30,5 @@ def sendChatMessageRequest(message, first_message=False):
             model="gpt-3.5-turbo", messages=roleplay_messages
         )
     reply = chat.choices[0].message.content
+    roleplay_messages.append({"role": "assistant", "content": reply})
     return reply
