@@ -91,6 +91,7 @@
 #learn-deck-btn:hover {
     /* border: 1px solid var(--purple); */
     color: white;
+    background-color: blue;
 }
 
 @media only screen and (max-width: 600px){
