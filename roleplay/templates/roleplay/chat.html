@@ -65,27 +65,13 @@
 
 {% block script %}
 <script>
+    const synth = window.speechSynthesis;
+    const voices = synth.getVoices();
+
     const chatAudio = (text) => {
-        console.log(text);
-        $.ajax({
-            url: "{% url 'audio' %}",
-            type: "POST",
-            dataType: "json",
-            data: {
-                "sentence": text,
-            },
-            headers: {
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRFToken": getCookie("csrftoken"),
-            },
-            success: (data) => {
-                const sound = new Audio(data.src);
-                sound.play();
-            },
-            error: (error) => {
-                console.log(error);
-            }
-        })
+        const utterThis = new SpeechSynthesisUtterance(text);
+        utterThis.lang = "ja-JP";
+        synth.speak(utterThis);
     }
 
     const sendMsg = () => {
