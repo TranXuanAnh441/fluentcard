@@ -112,63 +112,22 @@
 </script>
 
 <script>
-    var element = document.getElementsByClassName('fas fa-volume-up');
-    var word_audio_src = '';
+    const audio = (text) => {
+        const synth = window.speechSynthesis;
+        const voices = synth.getVoices();
+        const utterThis = new SpeechSynthesisUtterance(text);
+        utterThis.lang = "ja-JP";
+        synth.speak(utterThis);
+    }
 
-    element[0].onclick = function () {
-        if (word_audio_src != '') {
-            const sound = new Audio(word_audio_src);
-            sound.play();
-            return;
-        }
-        $.ajax({
-            url: "{% url 'audio' %}",
-            type: "POST",
-            dataType: "json",
-            data: {
-                "word": document.getElementsByClassName('card-title')[0].textContent,
-            },
-            headers: {
-                "X-Requested-With": "XMLHttpRequest",
-                "X-CSRFToken": getCookie("csrftoken"),
-            },
-            success: (data) => {
-                console.log(data.src);
-                word_audio_src = data.src;
-                const sound = new Audio(data.src);
-                sound.play();
-            },
-            error: (error) => {
-                console.log(error);
-            }
-        })
+    document.getElementsByClassName('fas fa-volume-up')[0].onclick = function () {
+        audio(document.getElementsByClassName('card-title')[0].textContent);
     };
 
-    var element = document.getElementsByClassName('sentence_jp');
-    for (var i = 0; i < element.length; i++) {
-        const textContent = element[i].textContent;
-        element[i].lastElementChild.onclick = function () {
-            console.log(textContent);
-            $.ajax({
-                url: "{% url 'audio' %}",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    "sentence": textContent,
-                },
-                headers: {
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRFToken": getCookie("csrftoken"),
-                },
-                success: (data) => {
-                    const sound = new Audio(data.src);
-                    sound.play();
-                },
-                error: (error) => {
-                    console.log(error);
-                }
-            })
-        }
+    var elements = document.getElementsByClassName('sentence_jp');
+    for (var i = 0; i < elements.length; i++) {
+        const textContent = elements[i].textContent;
+        elements[i].onclick = ( ) => { return audio(textContent) } 
     }
 </script>
 {% endblock %}

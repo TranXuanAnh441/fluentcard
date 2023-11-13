@@ -22,12 +22,19 @@ function requestFeedback(request_feedback_url, cur_question, cur_answer, cur_car
                 $(input).addClass('incorrect');
             }
             document.getElementById("feedback").textContent = data['explanation'];
-            document.getElementsByClassName('card-title')[0].style.borderBottom ='1px solid #D9D9D9';
+            document.getElementsByClassName('card-title')[0].style.borderBottom = '1px solid #D9D9D9';
             document.getElementsByClassName('spelling')[0].style.borderLeft = '3px solid #4D59FB';
             document.getElementById("word-slug").innerHTML = data['word-slug'] + ` <i class="fas fa-volume-up"></i>`;
             document.getElementById("word-kanji").textContent = data['word-kanji'];
             document.getElementById("word-hiragana").textContent = data['word-hiragana'];
             document.getElementById("word-definitions").textContent = data['word-definitions'];
+            document.getElementById("word-slug").lastElementChild.onclick = () => {
+                const synth = window.speechSynthesis;
+                const voices = synth.getVoices();
+                const utterThis = new SpeechSynthesisUtterance(data['word-slug']);
+                utterThis.lang = "ja-JP";
+                synth.speak(utterThis);
+            }
         },
         error: (error) => {
             console.log(error);
