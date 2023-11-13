@@ -11,12 +11,18 @@ function requestQuestion(request_question_url, cur_card_id, question_num, countD
             "X-CSRFToken": getCookie("csrftoken"),
         },
         success: (data) => {
-            const question_data = data['question'];
-            document.getElementById("question").textContent = question_data['question'];
+            const question = data['question'];
+            let options = data['options'];
+            if(options != 'None') {
+                options = JSON.parse(data['options']);
+                options = options.replaceAll('[', '').replaceAll(']','').replaceAll(' ', '').replaceAll("'", '');
+            }
+            options = options.split(',');
+            console.log(options);
+            document.getElementById("question").textContent = question;
             document.getElementById("number-of-question").textContent =
                 `${card_counter + 1} of ${question_num} questions`;
-            if ('options' in question_data) {
-                const options = question_data['options'];
+            if (options != 'None') {
                 const div = document.getElementById("question_form");
                 for (let i = 0; i < options.length; i++) {
                     div.innerHTML += `<div class="option-div" onclick="checker(this)">${options[i]}</button>`

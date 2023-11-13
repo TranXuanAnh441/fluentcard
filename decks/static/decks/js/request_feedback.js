@@ -1,10 +1,15 @@
 function requestFeedback(request_feedback_url, cur_question, cur_answer, cur_card_id, input) {
+    question_str = cur_question['question']
+    if (cur_question['options']) {
+        question_str += 'options:' + cur_question['options']
+    }
+    console.log(question_str);
     $.ajax({
         url: request_feedback_url,
         type: "POST",
         dataType: "json",
         data: {
-            'question': JSON.stringify(cur_question),
+            'question': question_str,
             'answer': cur_answer,
             'card_id': cur_card_id,
             'time': timeLeft.textContent,
@@ -30,7 +35,6 @@ function requestFeedback(request_feedback_url, cur_question, cur_answer, cur_car
             document.getElementById("word-definitions").textContent = data['word-definitions'];
             document.getElementById("word-slug").lastElementChild.onclick = () => {
                 const synth = window.speechSynthesis;
-                const voices = synth.getVoices();
                 const utterThis = new SpeechSynthesisUtterance(data['word-slug']);
                 utterThis.lang = "ja-JP";
                 synth.speak(utterThis);

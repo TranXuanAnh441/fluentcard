@@ -87,11 +87,15 @@ def get_card_question(request):
             return redirect('deck_list')
         card = WordCard.objects.get(id=int(card_id))
         word_dict = card.word
-        question = sendQuestionRequest(word_dict.word)
+        question_data = sendQuestionRequest(word_dict.word)
+        print(question_data)
+        if 'options' not in question_data:
+            question_data['options'] = 'None'
+        else:
+            question_data['options'] = json.dumps(question_data['options'])
         data = {
-            'question': question,
-            'word': word_dict.word,
-            'content': word_dict.kanji,
+            'question': question_data['question'],
+            'options': question_data['options'],
         }
         return JsonResponse(data)
     else:
@@ -105,6 +109,7 @@ def get_card_answer(request):
         card_id = int(request.POST.get('card_id'))
         time = int(request.POST.get('time')[:-1])
         quality = 1
+
         feedback = sendAnswerRequest(question, answer)
         correct = (feedback['correct'] == "True") or (
             feedback['correct'] == 'true')
@@ -112,9 +117,9 @@ def get_card_answer(request):
             quality += 1
             if time > 0:
                 quality += 1
-                if time >= 10:
+                if time >= 15:
                     quality += 1
-                    if time >= 20:
+                    if time >= 30:
                         quality += 1
 
         review_history = WordLearnHistory.objects.filter(
@@ -130,9 +135,12 @@ def get_card_answer(request):
             WordLearnHistory.objects.create(
                 card_id=card_id, easiness=review.easiness, interval=review.interval, next_date=review.review_date).save()
         word_dict = WordCard.objects.get(id=card_id).word
-
+        try:
+            explanation = feedback['explanation']
+        except:
+            explanation = feedback['explaination']
         data = {
-            'explanation': feedback['explanation'],
+            'explanation': explanation,
             'correct':  json.dumps(correct),
             'word-slug': word_dict.word,
             'word-kanji': word_dict.kanji,

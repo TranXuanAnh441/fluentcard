@@ -13,7 +13,7 @@
         <span id="number-of-question">1 of {{ question_num }} questions</span>
       </div>
       <div class="timer-div">
-        <span class="time-left">30s</span>
+        <span class="time-left">60s</span>
       </div>
     </div>
     <div class="question_content">
@@ -63,7 +63,7 @@
   }
 
   function countDown() {
-    let time_counter = 30;
+    let time_counter = 60;
     countdown = setInterval(() => {
       time_counter--;
       timeLeft.textContent = `${time_counter}s`;
@@ -99,14 +99,13 @@
     };
 
     if (document.getElementsByClassName('option-div').length > 0) {
-      cur_question.type = 'multiple choice'
       cur_question.options = [];
       for (let i = 0; i < document.getElementsByClassName('option-div').length; i++) {
         document.getElementsByClassName('option-div')[i].onclick = false;
         cur_question.options.push(document.getElementsByClassName('option-div')[i].textContent);
       }
     }
-    requestFeedback(request_feedback_url, cur_question, answer, cur_card_id, input)
+    requestFeedback(request_feedback_url, cur_question, answer, cur_card_id, input);
   }
 
   function nextCard() {
