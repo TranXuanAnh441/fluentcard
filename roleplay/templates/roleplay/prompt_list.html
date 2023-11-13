@@ -1,5 +1,55 @@
 {% extends "config/base.html" %}
 
+{% block modal %}
+<div class="modal mt-5" id="addPromptModal" tabindex="-1" role="dialog"
+    aria-labelledby="addPromptModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title mt-3" id="addPromptModalLabel">Create your own prompt for kaiwa practice.</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-group" action="{% url 'add_prompt' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="title">
+                            <h4>Your prompt title: </h4>
+                        </label>
+                        <input class="form-control" type="text" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">
+                            <h4>Your prompt description: </h4>
+                        </label><br>
+                        <textarea
+                            placeholder="Tips: the more detail your description, the better the performance. It is advised to described your role as 'user' and chatGPT role as 'ChatGPT'."
+                            name="description" cols="75" rows="5" style="font-size: 0.7em"></textarea>
+                    </div>
+                    <div class="form-group"><label for="difficulty">
+                            <h4>Your prompt difficulty (rating from 1 to 3): </h4>
+                        </label>
+                        <input class="form-control" type="number" min="1" max="3" step="1" name="difficulty"
+                            style="font-size: 1em">
+                    </div>
+                    <div class="form-group">
+                        <label for="image">
+                            <h4>Your prompt image url: </h4>
+                        </label>
+                        <input class="form-control" type="text" name="image">
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Create prompt">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 {% block content %}
 <div class="row">
     {% for prompt in prompts %}
@@ -20,6 +70,7 @@
     </div>
     {% endfor %}
 </div>
+<button id="addPromptBtn" class="floating-btn">Add Prompt</button>
 {% endblock %}
 
 {% block style%}
@@ -28,4 +79,9 @@
         color: orange;
     }
 </style>
+{% endblock %}
+
+{% load static %}
+{% block script %}
+<script src="{% static 'roleplay/js/add_prompt_modal.js' %}"></script>
 {% endblock %}

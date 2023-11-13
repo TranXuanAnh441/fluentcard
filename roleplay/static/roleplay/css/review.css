@@ -1,0 +1,22 @@
+.review_container {
+    align-items: center;
+    display: flex;
+}
+
+.result_box {
+    background: #fff;
+    border-radius: 5px;
+    padding: 25px 30px;
+    width: 450px;
+}
+
+.result_box .icon {
+    font-size: 100px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.result_box .complete_text {
+    font-size: 20px;
+    font-weight: 500;
+}
