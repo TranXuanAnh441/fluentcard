@@ -38,7 +38,7 @@ def sendChatMessageRequest(message, first_message=False):
             {'role': 'user', 'content': message},
         )
         chat = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=roleplay_messages
+            model=os.environ.get("GPT4_MODEL"), messages=roleplay_messages
         )
     reply = chat.choices[0].message.content
     roleplay_messages.append(
@@ -52,7 +52,7 @@ def sendChatReviewRequest():
         {'role': 'system', 'content': message},
     )
     chat = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo", messages=roleplay_messages
+        model=os.environ.get("GPT4_MODEL"), messages=roleplay_messages
     )
     reply = chat.choices[0].message.content
     roleplay_messages.append(
