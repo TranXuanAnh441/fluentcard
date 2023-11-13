@@ -1,0 +1,37 @@
+{% extends "config/base.html" %}
+
+{% block content %}
+<div class="review_container justify-content-center">
+    <div class="justify-content-center mt-5">
+        <h1 class="mt-3" style="text-align:center">Welcome to FluentCard, a ChatGPT-powered Flashcard Website !</h1>
+        <div class="mt-3">
+            <h2>Let's start with adding your card into deck</h2>
+            <ul>
+                <li>First, let's create new deck by 'Add Deck' button.</li>
+                <li>Then add the word you want to learn by 'Add Card' button.</li>
+                <li>Search for any word you want to learn on our built in dictionary system.</li>
+                <li>Then, let's learn the deck by 'Learn Deck' button and answer the questions for each word.</li>
+                <li>Keep on learning everyday and check your personal progress on the 'Progress' page.</li>
+            </ul>
+        </div>
+        <div class="mt-3">
+            <h2>Let's search new words on 'Dictionary' page</h2>
+            <ul>
+                <li>Vocabulary source from Jisho.org API</li>
+                <li>Search for any word you want to learn in both English and Japanese.</li>
+                <li>Check definitions, example sentences with images and audios.</li>
+                <li>Add the word directly to the deck and start learning without wasting time creating flashcards.</li>
+            </ul>
+        </div>
+        <div class="mt-3">
+            <h2>Let's practice using the words in communication with 'RolePlay' page.</h2>
+            <ul>
+                <li>You can choose the provided prompt or create your own prompt from the list.</li>
+                <li>Click on the prompt to start the conversation.</li>
+                <li>Try to use the word you are learning as much as possible. Your word use will be recorded in the progress page.</li>
+                <li>End the conversation and check the review by hitting the 'End' button.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

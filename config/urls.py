@@ -23,6 +23,7 @@ from . import views
 urlpatterns = [
     re_path(r'^$', views.index, name='index'),
     path('admin/', admin.site.urls),
+    path('help', views.help_page, name='help'),
     path('dictionary/', include('dictionary.urls')),
     path('users/', include('users.urls')),
     path('decks/', include('decks.urls')),
