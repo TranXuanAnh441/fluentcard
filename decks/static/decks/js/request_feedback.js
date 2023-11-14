@@ -39,6 +39,7 @@ function requestFeedback(request_feedback_url, cur_question, cur_answer, cur_car
                 utterThis.lang = "ja-JP";
                 synth.speak(utterThis);
             }
+            document.getElementById("word-slug").lastElementChild.style.cursor = 'pointer';
         },
         error: (error) => {
             console.log(error);
