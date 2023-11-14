@@ -41,9 +41,9 @@ def get_chat_response(request):
             for word in words:
                 response += f"From System: You used the word: {word} in your deck !\n"
         message = sendChatMessageRequest(msg)
-        response += message
         data = {
-            'response': response
+            'system': response,
+            'response': message,
         }
         return JsonResponse(data)
     else:

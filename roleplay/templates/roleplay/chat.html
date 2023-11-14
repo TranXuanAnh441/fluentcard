@@ -100,7 +100,15 @@
                 "X-CSRFToken": getCookie("csrftoken"),
             },
             success: (data) => {
-                console.log(data.response);
+                console.log(data);
+                if(data.system) {
+                    const youChatBox = document.getElementsByClassName('you')[0];
+                    const newYouChat = youChatBox.cloneNode(true);
+                    chat.appendChild(newYouChat);
+                    let messageLength = document.getElementsByClassName('message').length;
+                    document.getElementsByClassName('message')[messageLength - 1].innerHTML = data.system;
+                }
+
                 const youChatBox = document.getElementsByClassName('you')[0];
                 const newYouChat = youChatBox.cloneNode(true);
                 chat.appendChild(newYouChat);
@@ -108,6 +116,7 @@
                 document.getElementsByClassName('message')[messageLength - 1].innerHTML = data.response + ' <i class="fa fa-volume-up"></i>';
                 document.getElementsByClassName('message')[messageLength - 1].lastElementChild.style.cursor = 'pointer';
                 document.getElementsByClassName('message')[messageLength - 1].lastElementChild.onclick = function () { return chatAudio(data.response) };
+                
             },
             error: (error) => {
                 console.log(error);
