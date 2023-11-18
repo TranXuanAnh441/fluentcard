@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import RoleplayPrompt
 from .chatGPT_handler import sendChatMessageRequest, sendChatReviewRequest
 from .models import RoleplayPrompt
-from config.utils import tokenize
+from config.utils import tokenize, get_image
 from decks.models import WordCard
 
 # Create your views here.
@@ -13,7 +13,7 @@ from decks.models import WordCard
 @login_required
 def prompt_list(request):
     data = {
-        'prompts': RoleplayPrompt.objects.all(),
+        'prompts': RoleplayPrompt.objects.all().order_by('difficulty'),
         'start_num_range': range(1, 4), 
     }
     return render(request, 'roleplay/prompt_list.html', data)
@@ -65,6 +65,8 @@ def add_prompt(request):
         title = request.POST['title']
         description = request.POST['description']
         image = request.POST['image']
+        if image=='':
+            image = get_image(description)
         difficulty = request.POST['difficulty']
         RoleplayPrompt.objects.create(creator=request.user, title=title, description=description, image=image, difficulty=int(difficulty)).save()
     return redirect('prompt_list')

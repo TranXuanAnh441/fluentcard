@@ -12,4 +12,4 @@ class RoleplayPrompt(models.Model):
     )
     description = models.CharField(max_length=700)
     difficulty = models.IntegerField(default=1)
-    image = models.URLField(max_length = 200, null=True)
+    image = models.URLField(max_length = 1000, null=True)
