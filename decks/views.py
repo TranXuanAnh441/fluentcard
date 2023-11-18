@@ -1,7 +1,6 @@
-from datetime import date
-from supermemo2 import SMTwo
-import random
 import ast
+from datetime import date
+import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
@@ -10,7 +9,8 @@ from django.db.models.functions import ExtractMonth
 from .models import Deck, WordCard, WordLearnHistory
 from dictionary.models import WordDict
 from .chatGPT_handler import *
-
+from supermemo2 import SMTwo
+import random
 # Create your views here.
 
 
