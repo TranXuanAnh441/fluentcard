@@ -1,81 +1,53 @@
 {% extends "config/base.html" %}
 
 {% block content %}
-<div class="container justify-content-center">
-    <h1> Your learning progress </h1>
-    <canvas id="lineChart" style="width:100%;"></canvas>
-    <canvas id="pieChart" style="width:100%;"></canvas>
+<div class="container justify-content-center" style="text-align: center;">
+    <hr>
+    <div class="container mb-5 mt-5">
+        <h1>Added</h1>
+        <h3>On a daily average, you add {{ added_average }} cards.</h3>
+        <canvas id="addedChart"></canvas>
+    </div>
+    <hr>
+    <div class="container mb-5 mt-5">
+        <h1>Reviewed</h1>
+        <h3>On a daily average, you review {{ reviewed_average }} cards.</h3>
+        <canvas id="learntChart"></canvas>
+    </div>
+    <hr>
+    <div class="container mb-5 mt-5">
+        <h1>Easiness</h1>
+        <h3>On a daily average, review easiness {{ easiness_average }}.</h3>
+        <canvas id="easinessChart"></canvas>
+    </div>
+    <hr>
+    <div class="container mb-5 mt-5">
+        <h1>Interval</h1>
+        <h3>The interval between dates of review.</h3>
+        <canvas id="intervalChart"></canvas>
+    </div>
 </div>
-
 {% endblock %}
 
+{% load static %}
 {% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="{% static 'decks/js/charts/bar_chart.js' %}"></script>
+<script src="{% static 'decks/js/charts/line_chart.js' %}"></script>
+<script src="{% static 'decks/js/charts/pie_chart.js' %}"></script>
 <script>
-    const date_progress_x = JSON.parse('{{ date_progress_x|safe }}');
-    const date_progress_y = JSON.parse('{{ date_progress_y|safe }}').map(num => Number(num));;
+    const review_progress_x = JSON.parse('{{ review_progress_x|safe }}');
+    const review_progress_y = JSON.parse('{{ review_progress_y|safe }}').map(num => Number(num));
     const card_easiness_progress_x = JSON.parse('{{ card_easiness_progress_x|safe }}');
-    const card_easiness_progress_y = JSON.parse('{{ card_easiness_progress_y|safe }}').map(num => Number(num));;
+    const card_easiness_progress_y = JSON.parse('{{ card_easiness_progress_y|safe }}').map(num => Number(num));
+    const added_card_progress_x = JSON.parse('{{ added_card_progress_x|safe }}');
+    const added_card_progress_y = JSON.parse('{{ added_card_progress_y|safe }}').map(num => Number(num));
+    const card_interval_x = JSON.parse('{{ card_interval_x|safe }}');
+    const card_interval_y = JSON.parse('{{ card_interval_y|safe }}').map(num => Number(num));
 
-    new Chart("lineChart", {
-        type: "line",
-        data: {
-            labels: date_progress_x,
-            datasets: [{
-                fill: false,
-                lineTension: 0,
-                backgroundColor: "rgba(0,0,255,1.0)",
-                borderColor: "rgba(0,0,255,0.1)",
-                data: date_progress_y
-            }]
-        },
-        options: {
-            legend: {
-                display: false
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        min: Math.min(...date_progress_y) / 2,
-                        max: Math.max(...date_progress_y) * 1.5,
-                        beginAtZero: true,
-                        callback: function (value) {
-                            if (value % 1 === 0) {
-                                return value;
-                            }
-                        }
-                    }
-                }],
-            },
-            title: {
-                display: true,
-                text: "Number of Cards you Learn"
-            }
-        }
-    });
-
-    var barColors = [
-        "#b91d47",
-        "#00aba9",
-        "#2b5797",
-        "#e8c3b9",
-        "#1e7145"
-    ];
-
-    new Chart("pieChart", {
-        type: "pie",
-        data: {
-            labels: card_easiness_progress_x,
-            datasets: [{
-                backgroundColor: barColors,
-                data: card_easiness_progress_y
-            }]
-        },
-        options: {
-            title: {
-                display: true,
-                text: "Easiness of cards"
-            }
-        }
-    });
+    lineChart("addedChart", added_card_progress_x, added_card_progress_y);
+    lineChart("learntChart", review_progress_x, review_progress_y);
+    pieChart("easinessChart", card_easiness_progress_x, card_easiness_progress_y);
+    barChart("intervalChart", card_interval_x, card_interval_y);
 </script>
 {% endblock %}

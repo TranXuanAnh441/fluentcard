@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.db.models import Count, Q
+from django.db.models.functions import ExtractMonth
 from .models import Deck, WordCard, WordLearnHistory
 from dictionary.models import WordDict
 from .chatGPT_handler import *
@@ -154,27 +155,55 @@ def get_card_answer(request):
 
 @login_required
 def progress(request):
-    date_progress_x = []
-    date_progress_y = []
+    review_progress_x = []
+    review_progress_y = []
     card_easiness_progress_x = []
     card_easiness_progress_y = []
+    added_card_progress_x = []
+    added_card_progress_y = []
+    card_interval_x = []
+    card_interval_y = []
 
-    date_progress = WordLearnHistory.objects.filter(
+    # w = WordCard.objects.filter(deck__user=request.user).annotate(month=ExtractMonth('created_at')).values('month').annotate(count=Count('id')).values('month', 'count')  
+    # for t in w:
+    #     print(t)
+
+    review_progress = WordLearnHistory.objects.filter(
         card__deck__user=request.user).values('learnt_date').annotate(Count('card'))
     card_easiness_progress = WordLearnHistory.objects.filter(
         card__deck__user=request.user).values('easiness').annotate(Count('card'))
+    new_added_card_progress = WordCard.objects.filter(
+        deck__user=request.user).values('created_at').annotate(Count('id'))
+    card_intervals = WordLearnHistory.objects.filter(
+        card__deck__user=request.user).values('interval').annotate(Count('id'))
 
-    for q in date_progress:
-        date_progress_x.append(q['learnt_date'].strftime("%d-%m-%Y"))
-        date_progress_y.append(q['card__count'])
+    for q in review_progress:
+        review_progress_x.append(q['learnt_date'].strftime("%d-%m-%Y"))
+        review_progress_y.append(q['card__count'])
+
     for q in card_easiness_progress:
         card_easiness_progress_x.append(q['easiness'])
         card_easiness_progress_y.append(q['card__count'])
 
+    for q in new_added_card_progress:
+        added_card_progress_x.append(q['created_at'].strftime("%d-%m-%Y"))
+        added_card_progress_y.append(q['id__count'])
+
+    for q in card_intervals:
+        card_interval_x.append(str(q['interval']))
+        card_interval_y.append(q['id__count'])
+
     data = {
-        'date_progress_x': json.dumps(date_progress_x),
-        'date_progress_y': json.dumps(date_progress_y),
+        'added_average': "{:.2f}".format(sum(added_card_progress_y) / len(added_card_progress_y)),
+        'reviewed_average': "{:.2f}".format(sum(review_progress_y) / len(review_progress_y)),
+        'easiness_average': "{:.2f}".format(sum(card_easiness_progress_y) / len(card_easiness_progress_y)),
+        'review_progress_x': json.dumps(review_progress_x),
+        'review_progress_y': json.dumps(review_progress_y),
         'card_easiness_progress_x': json.dumps(card_easiness_progress_x),
         'card_easiness_progress_y': json.dumps(card_easiness_progress_y),
+        'added_card_progress_x': json.dumps(added_card_progress_x),
+        'added_card_progress_y': json.dumps(added_card_progress_y),
+        'card_interval_x': json.dumps(card_interval_x),
+        'card_interval_y': json.dumps(card_interval_y),
     }
     return render(request, 'decks/progress.html', data)
