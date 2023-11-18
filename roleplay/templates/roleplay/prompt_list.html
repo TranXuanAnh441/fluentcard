@@ -55,6 +55,7 @@
 <div>
     <div style="text-align: center;" class="container mb-5">
         <h1>Choose a prompt you like and let's start practicing conversation.</h1>
+        <p>Have some cool idea? Make your own prompt <a id="addPromptBtn">here</a></p>
     </div>
     <div class="row">
         {% for prompt in prompts %}
@@ -65,13 +66,12 @@
             <h3>{{ prompt.title }}</h3>
             <h4>Difficulty: {% for i in start_num_range %} {% if prompt.difficulty >= i %} <span
                     class="fa fa-star checked"> </span> {% else %} <span class="fa fa-star"> </span> {% endif %}
-                    {% endfor %} </h4>
+                {% endfor %} </h4>
             <p>author: {{ prompt.creator.username }}</p>
             <p>{{ prompt.description }}</p>
         </div>
         {% endfor %}
     </div>
-    <button id="addPromptBtn" class="floating-btn">Add Prompt</button>
 </div>
 {% endblock %}
 
@@ -79,6 +79,12 @@
 <style>
     .checked {
         color: orange;
+    }
+
+    #addPromptBtn {
+        cursor: pointer;
+        color: blue;
+        text-decoration: underline;
     }
 </style>
 {% endblock %}
