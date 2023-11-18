@@ -12,7 +12,7 @@ class WordDict(Word):
     hiragana = models.CharField(max_length=100)
     kanji = models.CharField(max_length=100)
     created_at = models.DateField(auto_now_add=True)
-    image = models.URLField(max_length = 200, null=True) 
+    image = models.URLField(max_length = 1000, null=True) 
 
     class Meta:
         constraints = [

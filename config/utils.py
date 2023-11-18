@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup, Tag
 from jisho_api.word import Word
 from jisho_api.tokenize import Tokens
 from bing_image_urls import bing_image_urls
+from openai import OpenAI
 
 
 def jisho_word_search(input):
@@ -73,12 +74,8 @@ def jisho_sentence_search(word):
     return sentences
 
 
-def get_image(word):
-    image_urls = bing_image_urls(word, limit=1)
-    image_url = ''
-    if len(image_urls) > 0:
-        image_url = image_urls[0]
-    return image_url
+def get_image(prompt):
+    return image_generation(prompt)
 
 
 def jisho_word_audio(word):
@@ -132,3 +129,18 @@ def tokenize(str):
     for t in r:
         tokens.append(t.token)
     return tokens
+
+
+def image_generation(prompt):
+    client = OpenAI(api_key=os.environ.get("CHATGPT"))
+
+    response = client.images.generate(
+        model="dall-e-3",
+        prompt=prompt,
+        size="1024x1024",
+        quality="standard",
+        n=1,
+    )
+
+    image_url = response.data[0].url
+    return image_url

@@ -1,7 +1,7 @@
-import openai
 import os
+from openai import OpenAI
 
-openai.api_key = os.environ.get("CHATGPT")
+client = OpenAI(api_key=os.environ.get("CHATGPT"))
 
 first_message_prompt = """
 You are a Japanese teacher.
@@ -37,7 +37,7 @@ def sendChatMessageRequest(message, first_message=False):
         roleplay_messages.append(
             {'role': 'user', 'content': message},
         )
-        chat = openai.ChatCompletion.create(
+        chat = client.chat.completions.create(
             model=os.environ.get("GPT4_MODEL"), messages=roleplay_messages
         )
         reply = chat.choices[0].message.content
@@ -48,7 +48,7 @@ def sendChatReviewRequest():
     roleplay_messages.append(
         {'role': 'system', 'content': message},
     )
-    chat = openai.ChatCompletion.create(
+    chat = client.chat.completions.create(
         model=os.environ.get("GPT4_MODEL"), messages=roleplay_messages
     )
     reply = chat.choices[0].message.content
