@@ -47,13 +47,16 @@
         margin: 0rem;
     }
     .main-header__nav { 
-        margin-right: 15px;
+        margin-right: 20px;
     }
 }
 
 
-@media only screen and (max-width: 400px){
+@media only screen and (max-width: 480px){
     .main-header__item a {
         font-size: 11px;
+    }
+    .main-header__nav { 
+        margin-right: 5px;
     }
 }
