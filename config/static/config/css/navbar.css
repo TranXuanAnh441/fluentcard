@@ -40,10 +40,20 @@
 
 @media only screen and (max-width: 640px){
     .main-header__item a {
-        padding: 5px 10px 5px 5px;
+        padding: 5px 5px 5px 5px;
         font-size: 13px;
     }
     .main-header__item {
         margin: 0rem;
+    }
+    .main-header__nav { 
+        margin-right: 15px;
+    }
+}
+
+
+@media only screen and (max-width: 400px){
+    .main-header__item a {
+        font-size: 11px;
     }
 }

@@ -7,11 +7,11 @@
 <!--Register-->
 <div class="container py-5">
 	<h1>Register</h1>
-	<p >If you already have an account, login <a href="{% url 'login'%}">here</a> instead.</p>
+	<p>If you already have an account, login <a href="{% url 'login'%}">here</a> instead.</p>
 	{% if messages %}
 	{% for message in messages %}
 	<li class="alert alert-{{ message.tags }}">
-	  {{ message }}
+		{{ message }}
 	</li>
 	{% endfor %}
 	{% endif %}
@@ -26,12 +26,28 @@
 
 {% block style %}
 <style>
+	body, html {
+		position: absolute;
+		overflow: hidden;
+		clip: auto;
+	}
+
 	@media only screen and (max-device-width: 640px) {
 		body, html {
 			width: 100%;
-  			clip: auto;
-  			position: absolute;
-  			overflow: hidden;
+			height: 100%;
+		}
+	}
+
+	@media only screen and (max-height: 750px) {
+		* {
+			font-size: 13px;
+		}
+	}
+
+	@media only screen and (max-width: 400px) {
+		* {
+			font-size: 10px;
 		}
 	}
 </style>
