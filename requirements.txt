@@ -7,8 +7,10 @@ bs4==0.0.1
 certifi==2023.11.17
 charset-normalizer==3.3.2
 colorama==0.4.6
+crispy-bootstrap5==2023.10
 distro==1.8.0
 Django==4.2.7
+django-crispy-forms==2.0
 h11==0.14.0
 httpcore==1.0.2
 httpx==0.25.1
@@ -27,4 +29,4 @@ supermemo2==2.0.0
 tqdm==4.66.1
 typing_extensions==4.8.0
 tzdata==2023.3
-urllib3===1.26.6
+urllib3==1.26.6
