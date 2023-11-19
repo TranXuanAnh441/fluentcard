@@ -9,7 +9,6 @@ from config.utils import tokenize, get_image
 from decks.models import WordCard
 import requests
 import os
-import boto3
 
 # Create your views here.
 
@@ -69,17 +68,7 @@ def add_prompt(request):
         description = request.POST['description']
         image_url = request.POST['image']
         if image_url=='':
-            ai_image_url = get_image(description)
-            r = requests.get(ai_image_url, stream=True)
-            session = boto3.Session(
-                aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
-                aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
-            )
-            s3 = session.resource('s3')
-            bucket = s3.Bucket(os.environ.get("AWS_BUCKET"))
-            key=title + ".png"
-            bucket.upload_fileobj(r.raw, key)
-            image_url = "https://fluentcard.s3.ap-northeast-1.amazonaws.com/" + key
+            image_url = get_image(description)
         difficulty = request.POST['difficulty']
         RoleplayPrompt.objects.create(creator=request.user, title=title, description=description, image=image_url, difficulty=int(difficulty)).save()
     return redirect('prompt_list')
