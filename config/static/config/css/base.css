@@ -17,13 +17,16 @@
     font-family: "Poppins", sans-serif;
 }
 
+html, body {
+    overflow-x: hidden;
+}
+
 body {
     background-color: var(--pastel_purple);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    overflow-x: hidden;
     font-size: 1.5em;
 }
 
