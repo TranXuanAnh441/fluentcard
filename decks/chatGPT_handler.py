@@ -1,8 +1,8 @@
 import os
 import ast
-from openai import OpenAI
+import openai
 
-client = OpenAI(api_key=os.environ.get("CHATGPT"))
+openai.api_key = os.environ.get("CHATGPT")
 
 answer_message_prompt = """
 You are a Japanese teacher and the user is the student.
@@ -40,7 +40,7 @@ def sendQuestionRequest(word):
         question_messages.append(
             {'role': 'user', 'content': str(message)},
         )
-        chat = client.chat.completions.create(
+        chat = openai.ChatCompletion.create(
             model=os.environ.get("QUESTION_MODEL"), messages=question_messages
         )
     reply = chat.choices[0].message.content
@@ -59,7 +59,7 @@ def sendAnswerRequest(question, answer):
         answer_messages.append(
             {'role': 'user', 'content': message},
         )
-        chat = client.chat.completions.create(
+        chat = openai.ChatCompletion.create(
             model=os.environ.get("FEEDBACK_MODEL"), messages=answer_messages
         )
         reply = chat.choices[0].message.content

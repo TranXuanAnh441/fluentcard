@@ -3,11 +3,12 @@ import json
 import os
 import urllib
 from bs4 import BeautifulSoup, Tag
-from openai import OpenAI
 from janome.tokenizer import Tokenizer
 from janome.analyzer import Analyzer
 from janome.tokenfilter import POSStopFilter, LowerCaseFilter
+import openai
 
+openai.api_key = os.environ.get("CHATGPT")
 
 def jisho_word_search(input):
     URL = "https://jisho.org/api/v1/search/words?keyword="
@@ -138,9 +139,8 @@ def tokenize(str):
 
 
 def image_generation(prompt):
-    client = OpenAI(api_key=os.environ.get("CHATGPT"))
 
-    response = client.images.generate(
+    response = openai.images.generate(
         model="dall-e-3",
         prompt=prompt,
         size="1024x1024",
