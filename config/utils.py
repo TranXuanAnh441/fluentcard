@@ -4,9 +4,11 @@ import os
 import urllib
 from bs4 import BeautifulSoup, Tag
 from jisho_api.word import Word
-from jisho_api.tokenize import Tokens
 from bing_image_urls import bing_image_urls
 from openai import OpenAI
+from janome.tokenizer import Tokenizer
+from janome.analyzer import Analyzer
+from janome.tokenfilter import POSStopFilter, LowerCaseFilter
 
 
 def jisho_word_search(input):
@@ -124,11 +126,14 @@ def full_sentence_audio(sentence):
 
 
 def tokenize(str):
-    tokens = []
-    r = Tokens.request(str)
-    for t in r:
-        tokens.append(t.token)
-    return tokens
+    token_filters = [ POSStopFilter(['助詞','助動詞']),
+                  LowerCaseFilter(),
+                ]
+    tokenizer = Tokenizer()
+    analyzer = Analyzer(tokenizer=tokenizer, token_filters=token_filters)
+    # get base form of words
+    list_wakati = [token.base_form for token in analyzer.analyze(str)]
+    return list_wakati
 
 
 def image_generation(prompt):
