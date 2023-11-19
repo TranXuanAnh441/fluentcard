@@ -9,6 +9,7 @@ from config.utils import tokenize, get_image
 from decks.models import WordCard
 import requests
 import os
+import boto3
 
 # Create your views here.
 
