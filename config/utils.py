@@ -3,7 +3,6 @@ import json
 import os
 import urllib
 from bs4 import BeautifulSoup, Tag
-from jisho_api.word import Word
 from openai import OpenAI
 from janome.tokenizer import Tokenizer
 from janome.analyzer import Analyzer
@@ -11,28 +10,31 @@ from janome.tokenfilter import POSStopFilter, LowerCaseFilter
 
 
 def jisho_word_search(input):
+    URL = "https://jisho.org/api/v1/search/words?keyword="
+    url = URL + urllib.parse.quote(input)
+    r = requests.get(url).json()
+    print(r)
     data = []
-    r = Word.request(input)
     if not r:
         return data
-    for d in r.data:
-        if any(char.isdigit() for char in d.slug):
+    for d in r['data']:
+        if any(char.isdigit() for char in d['slug']):
             continue
         word = {}
-        word['slug'] = d.slug
-        word['hiragana'] = d.japanese[0].reading
-        kanjis = [j.word for j in d.japanese ]
+        word['slug'] = d['slug']
+        word['hiragana'] = d['japanese'][0]['reading']
+        kanjis = [j['reading'] for j in d['japanese'] ]
         word['kanji'] = '/ '.join([str(elem) for elem in kanjis])
         word['definitions'] = []
-        for sense in d.senses:
-            if 'Wikipedia definition' not in sense.parts_of_speech:
+        for sense in d['senses']:
+            if 'Wikipedia definition' not in sense['parts_of_speech']:
                 definition = {}
                 definition['definition'] = '; '.join(
-                    [str(elem) for elem in sense.english_definitions])
+                    [str(elem) for elem in sense['english_definitions']])
                 definition['grammar'] = '; '.join(
-                    [str(elem) for elem in sense.parts_of_speech])
-                if len(sense.antonyms) > 0:
-                    definition['antonyms'] = '; '.join( [str(elem) for elem in sense.antonyms])
+                    [str(elem) for elem in sense['parts_of_speech']])
+                if len(sense['antonyms']) > 0:
+                    definition['antonyms'] = '; '.join( [str(elem) for elem in sense['antonyms']])
                 word['definitions'].append(definition)
         data.append(word)
     return data
