@@ -1,3 +1,25 @@
+const barChart = (chartId, x, y) => {
+    const barColors = ["blue", "purple"];
+    new Chart(chartId, {
+        type: "bar",
+        data: {
+            labels: x,
+            datasets: [{
+                backgroundColor: barColors,
+                data: y
+            }]
+        },
+        options: {
+            legend: {
+                display: false,
+            },
+            title: {
+                legendText: ['day', 'day'],
+            }
+        }
+    });
+}
+
 const lineChart = (chartId, x, y) => {
     new Chart(chartId, {
         type: "line",
@@ -29,6 +51,25 @@ const lineChart = (chartId, x, y) => {
                     }
                 }],
             },
+            title: {
+                display: false,
+            }
+        }
+    });
+}
+
+const pieChart = (chartId, x, y) => {
+    const pieColors = ["red", "green","blue","orange","brown"];
+    new Chart(chartId, {
+        type: "pie",
+        data: {
+            labels: x,
+            datasets: [{
+                backgroundColor: pieColors,
+                data: y
+            }]
+        },
+        options: {
             title: {
                 display: false,
             }

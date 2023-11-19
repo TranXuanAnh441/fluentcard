@@ -41,9 +41,7 @@
 {% load static %}
 {% block script %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-<script src="{% static 'decks/js/charts/bar_chart.js' %}"></script>
-<script src="{% static 'decks/js/charts/line_chart.js' %}"></script>
-<script src="{% static 'decks/js/charts/pie_chart.js' %}"></script>
+<script src="{% static 'decks/js/charts.js' %}"></script>
 <script>
     const review_progress_x = JSON.parse('{{ review_progress_x|safe }}');
     const review_progress_y = JSON.parse('{{ review_progress_y|safe }}').map(num => Number(num));
