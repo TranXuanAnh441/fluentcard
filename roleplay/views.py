@@ -8,7 +8,6 @@ from .models import RoleplayPrompt
 from config.utils import tokenize, get_image
 from decks.models import WordCard
 import requests
-import boto3
 import os
 
 # Create your views here.
