@@ -4,7 +4,6 @@ import os
 import urllib
 from bs4 import BeautifulSoup, Tag
 from jisho_api.word import Word
-from bing_image_urls import bing_image_urls
 from openai import OpenAI
 from janome.tokenizer import Tokenizer
 from janome.analyzer import Analyzer
