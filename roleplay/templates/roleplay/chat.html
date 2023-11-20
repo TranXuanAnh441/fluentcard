@@ -7,24 +7,10 @@
 
 {% block content %}
 <div class="chat-container">
-    <aside>
-        <header>
-            <input type="text" placeholder="search">
-        </header>
-        <ul>
-            <!-- <li>
-                <div>
-                    <h2>Previous chats</h2>
-                </div>
-            </li> -->
-        </ul>
-    </aside>
-
     <div class="chat_window">
         <header>
-            <div class="d-flex">
-                <h2 class="d-inline-block">{{ prompt_title }}</h2>
-                <a class="d-inline-block end" href="{% url 'chat_review' %}">End <i class="fa fa-sign-out"></i></a>
+            <div class="chat-header">
+                <h2 class="inline-block">{{ prompt_title }}</h2>
             </div>
         </header>
 
@@ -33,9 +19,9 @@
                 <div class="entete">
                     <span class="status green"></span>
                     <h2>Chat GPT</h2>
+                    <!-- <div class="triangle"></div> -->
                     <h3>{{ current_time }}</h3>
                 </div>
-                <div class="triangle"></div>
                 <div class="message" id="first_message">
                     {{ first_message }} <i class="fa fa-volume-up"></i>
                 </div>
@@ -44,9 +30,9 @@
                 <div class="entete">
                     <h3>{{ current_time }}</h3>
                     <h2>User</h2>
+                    <!-- <div class="triangle"></div> -->
                     <span class="status blue"></span>
                 </div>
-                <div class="triangle"></div>
                 <div class="message">
                     <p>Start talking in Japanese with the bot and practice your kaiwa skills.</p>
                 </div>
@@ -54,9 +40,10 @@
         </ul>
         <footer>
             <textarea placeholder="Type your message" id="msgText"></textarea>
-            <div class="d-flex submit">
-                <a class="d-inline-block" onclick="sendMsg()">Send</a>
-                <a class="d-inline-block sound" id="recordStart">Voice <i class="fa fa-microphone"></i></a>
+            <div class="submit">
+                <a class="inline-block" onclick="sendMsg()">Send</a>
+                <a class="inline-block sound" id="recordStart">Voice <i class="fa fa-microphone"></i></a>
+                <a class="inline-block end" href="{% url 'chat_review' %}">End <i class="fa-sign-out"></i></a>
             </div>
         </footer>
     </div>
