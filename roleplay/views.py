@@ -5,8 +5,10 @@ from django.contrib.auth.decorators import login_required
 from .models import RoleplayPrompt
 from .chatGPT_handler import sendChatMessageRequest, sendChatReviewRequest
 from .models import RoleplayPrompt
-from config.utils import tokenize
+from config.utils import tokenize, get_image
 from decks.models import WordCard
+import boto3
+import requests, os
 
 # Create your views here.
 
@@ -23,6 +25,7 @@ def prompt_list(request):
 def chat(request, prompt_id):
     prompt = RoleplayPrompt.objects.get(id=int(prompt_id))
     first_message = sendChatMessageRequest(prompt.description, first_message=True)
+    # first_message = 'first message dummy'
     data = {
         'first_message': first_message,
         'prompt_title': prompt.title,
@@ -41,6 +44,7 @@ def get_chat_response(request):
             for word in words:
                 response += f"From System: You used the word: {word} in your deck !\n"
         message = sendChatMessageRequest(msg)
+        # message = ''
         data = {
             'system': response,
             'response': message,
@@ -66,7 +70,17 @@ def add_prompt(request):
         description = request.POST['description']
         image_url = request.POST['image']
         if image_url=='':
-            image_url = "https://3.bp.blogspot.com/-6pxAA5-dgSg/VPQTsqKsq3I/AAAAAAAAsAs/usDLC-omq9U/s800/zatsudan_woman.png"
+            ai_image_url = get_image(description)
+            r = requests.get(ai_image_url, stream=True)
+            session = boto3.Session(
+                aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+                aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
+            )
+            s3 = session.resource('s3')
+            bucket = s3.Bucket(os.environ.get("AWS_BUCKET"))
+            key=title + ".png"
+            bucket.upload_fileobj(r.raw, key)
+            image_url = "https://fluentcard.s3.ap-northeast-1.amazonaws.com/" + key
         difficulty = request.POST['difficulty']
         RoleplayPrompt.objects.create(creator=request.user, title=title, description=description, image=image_url, difficulty=int(difficulty)).save()
     return redirect('prompt_list')
