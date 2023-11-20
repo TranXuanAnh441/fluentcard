@@ -25,11 +25,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('help', views.help_page, name='help'),
     path('dictionary/', include('dictionary.urls')),
+    path('users/', include('users.urls')),
     path('decks/', include('decks.urls')),
     path('roleplay/', include('roleplay.urls')),
-    path("users/register", views.register_request, name="register"),
-    path("users/login", views.login_request, name="login"),
-    path("users/logout", views.logout_view, name="logout"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
