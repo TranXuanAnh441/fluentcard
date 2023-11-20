@@ -221,6 +221,7 @@
 @media only screen and (max-width: 600px) {
     .question-container {
         padding-bottom: 65px;
+        width: auto;
     }
     .answer-container {
         margin-top: 20px;
