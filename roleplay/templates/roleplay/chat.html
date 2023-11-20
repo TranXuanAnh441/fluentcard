@@ -87,7 +87,6 @@
                 "X-CSRFToken": getCookie("csrftoken"),
             },
             success: (data) => {
-                console.log(data);
                 if(data.system) {
                     const youChatBox = document.getElementsByClassName('you')[0];
                     const newYouChat = youChatBox.cloneNode(true);

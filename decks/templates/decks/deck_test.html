@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container justify-content-center">
+<div class="container quiz-container justify-content-center">
   <div class="question-container justify-content-center">
     <div class="header">
       <div class="number-of-count">
@@ -74,6 +74,13 @@
   }
 
   window.onload = function () {
+    if (window.matchMedia("(max-width: 600px)").matches) {
+      console.log('running');
+      let quiz_container = document.getElementsByClassName("quiz-container")[0];
+      quiz_container.classList.remove("justify-content-center");
+      quiz_container.classList.remove("container");
+      quiz_container.classList.add("transparent-container");
+    }
     requestQuestion(request_question_url, data[card_counter], data.length, countDown);
   };
 
@@ -127,5 +134,7 @@
     document.getElementById("word-definitions").textContent = '';
     requestQuestion(request_question_url, cur_card_id, data.length, countDown);
   }
+
+
 </script>
 {% endblock %}

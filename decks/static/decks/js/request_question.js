@@ -18,7 +18,6 @@ function requestQuestion(request_question_url, cur_card_id, question_num, countD
                 options = options.replaceAll('[', '').replaceAll(']','').replaceAll(' ', '').replaceAll("'", '');
             }
             options = options.split(',');
-            console.log(options);
             document.getElementById("question").textContent = question;
             document.getElementById("number-of-question").textContent =
                 `${card_counter + 1} of ${question_num} questions`;

@@ -3,7 +3,6 @@ function requestFeedback(request_feedback_url, cur_question, cur_answer, cur_car
     if (cur_question['options']) {
         question_str += 'options:' + cur_question['options']
     }
-    console.log(question_str);
     $.ajax({
         url: request_feedback_url,
         type: "POST",
@@ -19,7 +18,6 @@ function requestFeedback(request_feedback_url, cur_question, cur_answer, cur_car
             "X-CSRFToken": getCookie("csrftoken"),
         },
         success: (data) => {
-            console.log(data);
             $(input).removeClass('check');
             if ((data['correct'] == 'True') || (data['correct'] == 'true') || (data['correct'] == true)) {
                 $(input).addClass('correct');
