@@ -37,6 +37,8 @@
 			<a href="{% url 'deck_cards' deck_id=deck.id %}">View all cards <i class="fas fa-chevron-right"></i></a>
 		</div>
 		<div class="deck-info">
+			<h6>{{ deck.created_at }}</h6>
+			<h2>{{ deck.name }}</h2>
 			<div class="progress-container">
 				<div class="progress" learnt-card-num="{{ deck.learnt_card_num }}"
 					card-num="{{deck.card_for_review_num}}"></div>
@@ -44,8 +46,6 @@
 					{{ deck.learnt_card_num }} / {{ deck.card_for_review_num }} Cards
 				</span>
 			</div>
-			<h6>{{ deck.created_at }}</h6>
-			<h2>{{ deck.name }}</h2>
 			<div class="btn btn-primary" id="add-card-btn"><a href={% url 'word_search' %}>Add
 					cards</a></div>
 			<div class="btn" id="learn-deck-btn"><a href={% url 'deck_test' deck_id=deck.id %}>Learn
