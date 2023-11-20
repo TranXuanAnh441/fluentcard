@@ -79,22 +79,3 @@ def word_detail(request, slug):
     }
 
     return render(request, 'dictionary/word_detail.html', data)
-
-
-@login_required
-def audio(request):
-    if request.method == "POST":
-        if request.POST.get('word'):
-            data = {
-                'src': jisho_word_audio(request.POST.get('word'))
-            }
-        else:
-            sentence = "".join(
-                re.split("\(|\)", request.POST.get('sentence').replace(' ', ''))[::2])
-            print(sentence)
-            data = {
-                'src': full_sentence_audio(sentence)
-            }
-        return JsonResponse(data)
-    else:
-        return HttpResponseBadRequest('Invalid request')

@@ -5,10 +5,8 @@ from django.contrib.auth.decorators import login_required
 from .models import RoleplayPrompt
 from .chatGPT_handler import sendChatMessageRequest, sendChatReviewRequest
 from .models import RoleplayPrompt
-from config.utils import tokenize, get_image
+from config.utils import tokenize
 from decks.models import WordCard
-import requests
-import os
 
 # Create your views here.
 
@@ -68,7 +66,7 @@ def add_prompt(request):
         description = request.POST['description']
         image_url = request.POST['image']
         if image_url=='':
-            image_url = get_image(description)
+            image_url = "https://3.bp.blogspot.com/-6pxAA5-dgSg/VPQTsqKsq3I/AAAAAAAAsAs/usDLC-omq9U/s800/zatsudan_woman.png"
         difficulty = request.POST['difficulty']
         RoleplayPrompt.objects.create(creator=request.user, title=title, description=description, image=image_url, difficulty=int(difficulty)).save()
     return redirect('prompt_list')

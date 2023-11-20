@@ -89,7 +89,6 @@ def get_card_question(request):
         card = WordCard.objects.get(id=int(card_id))
         word_dict = card.word
         question_data = sendQuestionRequest(word_dict.word)
-        print(question_data)
         if 'options' not in question_data:
             question_data['options'] = 'None'
         else:

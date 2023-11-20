@@ -1,5 +1,4 @@
 import requests
-import json
 import os
 import urllib
 from bs4 import BeautifulSoup, Tag
@@ -13,7 +12,6 @@ def jisho_word_search(input):
     URL = "https://jisho.org/api/v1/search/words?keyword="
     url = URL + urllib.parse.quote(input)
     r = requests.get(url).json()
-    print(r)
     data = []
     if not r:
         return data
@@ -79,51 +77,6 @@ def jisho_sentence_search(word):
 
 def get_image(prompt):
     return image_generation(prompt)
-
-
-def jisho_word_audio(word):
-    URL = 'https://jisho.org/word/'
-    url = URL + word
-    url = url.replace(' ', '')
-    r = requests.get(url).content
-    soup = BeautifulSoup(r, "html.parser")
-    try:
-        t = soup.find_all("source", {'type': "audio/mpeg"})[0]
-    except:
-        return full_sentence_audio(word)
-    return t['src']
-
-
-def full_sentence_audio(sentence):
-    url = "https://play.ht/api/v1/convert"
-
-    payload = json.dumps({
-        "voice": "ja-JP_EmiV3Voice",
-        "content": [
-            sentence
-        ],
-        "title": "japanese sentence pronunciation"
-    })
-
-    headers = {
-        'Authorization': os.environ.get("AUTHORIZATION"),
-        'X-User-ID': os.environ.get("X_USER_ID"),
-        'Content-Type': 'application/json'
-    }
-    response = json.loads(requests.request(
-        "POST", url, headers=headers, data=payload).text)
-    url = "https://play.ht/api/v1/articleStatus/?transcriptionId=" + \
-        response["transcriptionId"]
-    headers = {
-        "content-type": 'application/json',
-        "AUTHORIZATION": os.environ.get("AUTHORIZATION"),
-        "X-USER-ID": os.environ.get("X_USER_ID")
-    }
-    converted = False
-    while not converted:
-        response = json.loads(requests.get(url, headers=headers).text)
-        converted = response['converted']
-    return response['audioUrl']
 
 
 def tokenize(str):
