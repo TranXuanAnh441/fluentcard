@@ -1,7 +1,6 @@
 import requests
 import os
 import urllib
-from bs4 import BeautifulSoup, Tag
 from openai import OpenAI
 from janome.tokenizer import Tokenizer
 from janome.analyzer import Analyzer
@@ -42,28 +41,29 @@ def jisho_sentence_search(word):
     URL = 'https://jisho.org/search/'
     url = URL + urllib.parse.quote(word + " #sentences")
     url = url.replace(' ', '')
-    soup = BeautifulSoup(requests.get(url).content, "html.parser")
-    res = soup.find_all("div", {"class": "sentence_content"})
-
     data = []
-    for r in res[:5]:
-        s1_jp = r.find_all("ul")
-        s1_en = r.find_all("span", {"class": "english"})[0].text
+    # soup = BeautifulSoup(requests.get(url).content, "html.parser")
+    # res = soup.find_all("div", {"class": "sentence_content"})
 
-        b = ""
-        for s in s1_jp:
-            for child in s:
-                if isinstance(child, Tag):
-                    u = child.find("span", {"class": "unlinked"}).text
-                    b += u
-                    try:
-                        f = child.find("span", {"class": "furigana"}).text
-                        b += f"({f})"
-                    except:
-                        pass
-                else:
-                    b+= child.text
-        data.append({"japanese": ''.join(b.split()), "en_translation": s1_en})
+    # data = []
+    # for r in res[:5]:
+    #     s1_jp = r.find_all("ul")
+    #     s1_en = r.find_all("span", {"class": "english"})[0].text
+
+    #     b = ""
+    #     for s in s1_jp:
+    #         for child in s:
+    #             if isinstance(child, Tag):
+    #                 u = child.find("span", {"class": "unlinked"}).text
+    #                 b += u
+    #                 try:
+    #                     f = child.find("span", {"class": "furigana"}).text
+    #                     b += f"({f})"
+    #                 except:
+    #                     pass
+    #             else:
+    #                 b+= child.text
+    #     data.append({"japanese": ''.join(b.split()), "en_translation": s1_en})
 
     sentences = []
     if data:
