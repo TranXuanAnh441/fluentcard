@@ -41,8 +41,8 @@ def word_detail(request, slug):
         word['kanji'] = result.kanji
         word['hiragana'] = result.hiragana
         word['definitions'] = ast.literal_eval(result.definitions)
+        id = result.id
         # img = result.image
-        # id = result.id
         # if img == '' or img is None:
         #     img = get_image(slug)
         #     result.image = img
@@ -51,7 +51,7 @@ def word_detail(request, slug):
         word = jisho_word_search(slug)[0]
         # img = get_image(slug)
         obj = WordDict.objects.create(word=word['slug'], definitions=str(word['definitions']),
-                                     hiragana=word['hiragana'], kanji=word['kanji'], image=img)
+                                     hiragana=word['hiragana'], kanji=word['kanji'])
         obj.save()
         id = obj.id
     img = get_image(slug)

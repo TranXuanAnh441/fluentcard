@@ -20,11 +20,12 @@ class Deck(models.Model):
 
     @property
     def card_for_review_num(self):
-        first_visit_cards = list(WordCard.objects.filter(deck=self, word_learn_history=None).values_list('id', flat=True))
-        today_review_cards = list(WordLearnHistory.objects.filter(card__deck=self)
-                                .filter(Q(next_date=date.today()) | Q(learnt_date=date.today())).distinct()
-                                .values_list('card_id', flat=True))
-        return len((list(set(first_visit_cards + today_review_cards))))
+        arr = list(WordCard.objects.filter(deck=self)
+                                    .filter(Q(word_learn_history=None) | 
+                                            Q(word_learn_history__next_date=date.today()) | 
+                                            Q(word_learn_history__learnt_date=date.today()))
+                                    .distinct().values_list('id', flat=True))
+        return len(arr)
 
 
 class WordCard(models.Model):
