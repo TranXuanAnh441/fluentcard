@@ -42,20 +42,20 @@ def word_detail(request, slug):
         word['kanji'] = result.kanji
         word['hiragana'] = result.hiragana
         word['definitions'] = ast.literal_eval(result.definitions)
-        img = result.image
-        id = result.id
-        if img == '' or img is None:
-            img = get_image(slug)
-            result.image = img
-            result.save()
+        # img = result.image
+        # id = result.id
+        # if img == '' or img is None:
+        #     img = get_image(slug)
+        #     result.image = img
+        #     result.save()
     except:
         word = jisho_word_search(slug)[0]
-        img = get_image(slug)
+        # img = get_image(slug)
         obj = WordDict.objects.create(word=word['slug'], definitions=str(word['definitions']),
                                      hiragana=word['hiragana'], kanji=word['kanji'], image=img)
         obj.save()
         id = obj.id
-
+    img = get_image(slug)
     sentences = [sentence for sentence in SentenceDict.objects.filter(word=slug)[
         :5]]
     if len(sentences) > 0:
