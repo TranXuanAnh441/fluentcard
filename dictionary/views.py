@@ -54,7 +54,7 @@ def word_detail(request, slug):
                                      hiragana=word['hiragana'], kanji=word['kanji'])
         obj.save()
         id = obj.id
-    img = get_image(slug)
+    # img = get_image(slug)
     sentences = [sentence for sentence in SentenceDict.objects.filter(word=slug)[
         :5]]
     if len(sentences) > 0:
@@ -73,8 +73,18 @@ def word_detail(request, slug):
         'word': word,
         'id': id,
         'word_added': WordCard.objects.filter(word=id).count() > 0,
-        'image_url': img,
+        # 'image_url': img,
         'decks': Deck.objects.filter(user=request.user)
     }
 
     return render(request, 'dictionary/word_detail.html', data)
+
+@login_required
+def get_ai_image(request):
+    if request.method == "POST":
+        word = request.POST['word']
+        data = {
+            'image_url': get_image(word)
+        }
+        return JsonResponse(data)
+    return HttpResponseBadRequest

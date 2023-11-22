@@ -36,20 +36,19 @@ answer_messages = [
 
 
 def sendQuestionRequest(word):
-    message = "Make question for the word: " +  word
-    if message:
-        question_messages.append(
-            {'role': 'user', 'content': str(message)},
-        )
-        chat = client.chat.completions.create(
-            model=os.environ.get("QUESTION_MODEL"), messages=question_messages
-        )
+    message = f"Make question for the word: {word}"
+    question_messages.append(
+        {'role': 'user', 'content': str(message)},
+    )
+    chat = client.chat.completions.create(
+        model=os.environ.get("QUESTION_MODEL"), messages=question_messages
+    )
     reply = chat.choices[0].message.content
     try:
         question = ast.literal_eval(reply)
-        if question['question']: 
-            return question
+        return question
     except:
+        print('ast error')
         sendQuestionRequest(word)
 
 

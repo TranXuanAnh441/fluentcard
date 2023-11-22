@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup, Tag
 from openai import OpenAI
 from janome.tokenizer import Tokenizer
 from janome.analyzer import Analyzer
-from janome.tokenfilter import POSStopFilter, LowerCaseFilter
 
 
 def jisho_word_search(input):
@@ -80,11 +79,8 @@ def get_image(prompt):
 
 
 def tokenize(str):
-    token_filters = [ POSStopFilter(['助詞','助動詞']),
-                  LowerCaseFilter(),
-                ]
     tokenizer = Tokenizer()
-    analyzer = Analyzer(tokenizer=tokenizer, token_filters=token_filters)
+    analyzer = Analyzer(tokenizer=tokenizer)
     # get base form of words
     list_wakati = [token.base_form for token in analyzer.analyze(str)]
     return list_wakati

@@ -11,6 +11,7 @@ from dictionary.models import WordDict
 from .chatGPT_handler import *
 from supermemo2 import SMTwo
 import random
+from config.utils import tokenize
 # Create your views here.
 
 
@@ -87,8 +88,33 @@ def get_card_question(request):
         if not card_id:
             return redirect('deck_list')
         card = WordCard.objects.get(id=int(card_id))
-        word_dict = card.word
-        question_data = sendQuestionRequest(word_dict.word)
+        word = card.word.word
+        question_data = None
+        check = False
+        test_count = 0
+        while check == False:
+            if test_count >= 7:
+                break
+            reply = sendQuestionRequest(word)
+            if reply == None or ('question' not in reply):
+                continue
+            if reply['question'].replace(' ', '') == '':
+                continue
+            test_count += 1
+            question_data = reply
+            print(word)
+            print(reply)
+            question_data_str = reply['question']
+            tokens = tokenize(str(reply['question']))
+            if 'options' in reply:
+                if reply['options'].replace(' ', '') in ['', '[]']:
+                    continue
+                question_data_str += str(reply['options'])
+                tokens.append(tokenize(str(reply['options'])))
+            if (word in tokens) or (word in question_data_str):    
+                check = True        
+            else:
+                print('not in')
         if 'options' not in question_data:
             question_data['options'] = 'None'
         else:
