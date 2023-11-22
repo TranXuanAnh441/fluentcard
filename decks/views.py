@@ -49,11 +49,11 @@ def add_deck(request):
 def add_card(request):
     if request.method == "POST":
         deck_id = int(request.POST['deck_id'])
-        word_id = int(request.POST['id'])
+        word_id = int(request.POST['word_id'])
         WordCard.objects.create(card_type="ME", deck_id=int(
             deck_id), word_id=word_id).save()
-
-    return redirect(request.META.get('HTTP_REFERER'))
+        return JsonResponse(data={'message': 'succeeded!'})
+    return HttpResponseBadRequest
 
 
 @login_required
@@ -96,9 +96,9 @@ def get_card_question(request):
             if test_count >= 7:
                 break
             reply = sendQuestionRequest(word)
-            if reply == None or ('question' not in reply):
+            if reply == None or ('question' not in reply) or (reply['question'].replace(' ', '') == ''):
                 continue
-            if reply['question'].replace(' ', '') == '':
+            if ('options' in reply) and (reply['options'].replace(' ', '') in ['', '[]']):
                 continue
             test_count += 1
             question_data = reply
@@ -107,8 +107,6 @@ def get_card_question(request):
             question_data_str = reply['question']
             tokens = tokenize(str(reply['question']))
             if 'options' in reply:
-                if reply['options'].replace(' ', '') in ['', '[]']:
-                    continue
                 question_data_str += str(reply['options'])
                 tokens.append(tokenize(str(reply['options'])))
             if (word in tokens) or (word in question_data_str):    

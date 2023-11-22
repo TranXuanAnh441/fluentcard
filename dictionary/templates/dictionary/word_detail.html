@@ -16,15 +16,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-group" action="{% url 'add_card' %}" method="post">
+                <form onsubmit="addToDeck();return false;" class="form-group">
                     {% csrf_token %}
-                    <select name="deck_id" class="deck_id">
+                    <select name="deck_id" class="deck_id" id="deck_id">
                         {% for deck in decks %}
                         <option value="{{ deck.id }}">{{ deck.name }}</option>
                         {% endfor %}
                     </select>
-                    <input type="hidden" name='id' value="{{ id }}">
-                    <input type="submit" class="btn btn-primary" value="Add to deck">
+                    <input type="hidden" name='word_id' value="{{ word_id }}" id="word_id">
+                    <input type="submit" class="btn btn-primary">
                 </form>
             </div>
         </div>
@@ -67,15 +67,13 @@
                     </div>
                 </div>
                 <div>
-                    {% if word_added %}
-                    <div class="btn-link-wrapper d-inline-block">
-                        <a class="btn-link disabled">Added !</a>
-                    </div>
-                    {% else %}
                     <div class="btn-link-wrapper d-inline-block" id="addToDeckBtn">
-                        <a href="" class="btn-link" onclick="return false;">Add to deck</a>
+                        {% if word_added %}
+                        <a class="btn-link disabled">Added !</a>
+                        {% else %}
+                        <a href="" class="btn-link" onclick="return false;" id="addToDeckA">Add to deck</a>
+                        {% endif %}
                     </div>
-                    {% endif %}
                 </div>
             </div>
         </div>
@@ -95,7 +93,7 @@
 
 {% block script %}
 <script>
-    window.onload = function () {
+    const getImage = () => {
         $.ajax({
             url: "{% url 'get_ai_image' %}",
             type: "POST",
@@ -117,6 +115,9 @@
                 document.getElementsByClassName('system-message')[0].textContent = 'Error when generating image, please try reload the page again !'
             }
         })
+    }
+    window.onload = function () {
+        getImage();
     };
 </script>
 <script>
@@ -142,7 +143,6 @@
         }
     }
 </script>
-
 <script>
     const audio = (text) => {
         const synth = window.speechSynthesis;
@@ -160,6 +160,34 @@
     for (var i = 0; i < elements.length; i++) {
         const textContent = elements[i].textContent;
         elements[i].onclick = () => { return audio(textContent) }
+    }
+
+    const addToDeck = (event) => {
+        const e = document.getElementById("deck_id");
+        const deck_id = e.options[e.selectedIndex].value;
+        const word_id = document.getElementById("word_id").value;
+        $.ajax({
+            url: "{% url 'add_card' %}",
+            type: "POST",
+            dataType: "json",
+            data: {
+                'deck_id': deck_id,
+                'word_id': word_id,
+            },
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            success: (data) => {
+                console.log('succeeded!');
+                modal.style.display = "none";
+                bg.classList.remove("blur");
+                document.getElementById("addToDeckBtn").innerHTML = "<a class='btn-link disabled'>Added !</a>";
+            },
+            error: (error) => {
+                console.log(error);
+            }
+        })
     }
 </script>
 {% endblock %}
