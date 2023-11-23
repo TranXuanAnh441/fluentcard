@@ -85,7 +85,7 @@
                 </div>
             </div>
             <br>
-            <h4 class="text-center system-message">Image loading, please wait a moment!</h4>
+            <h4 class="text-center system-message">Image is being generated, please wait a moment!</h4>
         </div>
     </div>
 </div>
@@ -112,7 +112,7 @@
             },
             error: (error) => {
                 console.log(error);
-                document.getElementsByClassName('system-message')[0].textContent = 'Error when generating image, please try reload the page again !'
+                document.getElementsByClassName('system-message')[0].textContent = 'Error when generating image (likely server timeout), please try reload the page again !'
             }
         })
     }
