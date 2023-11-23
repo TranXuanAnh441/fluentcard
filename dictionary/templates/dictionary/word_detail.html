@@ -66,15 +66,15 @@
                         </ul>
                     </div>
                 </div>
-                <div>
-                    <div class="btn-link-wrapper d-inline-block" id="addToDeckBtn">
-                        {% if word_added %}
-                        <a class="btn-link disabled">Added !</a>
-                        {% else %}
-                        <a href="" class="btn-link" onclick="return false;" id="addToDeckA">Add to deck</a>
-                        {% endif %}
-                    </div>
+                {% if word_added %}
+                <div class="btn-link-wrapper d-inline-block">
+                    <a class="btn-link disabled">Added !</a>
                 </div>
+                {% else %}
+                <div class="btn-link-wrapper d-inline-block" id="addToDeckBtn">
+                    <a href="" class="btn-link" onclick="return false;">Add to deck</a>
+                </div>
+                {% endif %}
             </div>
         </div>
         <div class="card d-inline-block">
@@ -121,10 +121,10 @@
     };
 </script>
 <script>
-    var modal = document.getElementById("addToDeckModal");
-    var btn = document.getElementById("addToDeckBtn");
-    var span = document.getElementsByClassName("close")[0];
-    var bg = document.getElementsByClassName("bg")[0];
+    let modal = document.getElementById("addToDeckModal");
+    let btn = document.getElementById("addToDeckBtn");
+    let span = document.getElementsByClassName("close")[0];
+    let bg = document.getElementsByClassName("bg")[0];
 
     btn.onclick = function () {
         modal.style.display = "block";
@@ -179,10 +179,10 @@
                 "X-CSRFToken": getCookie("csrftoken"),
             },
             success: (data) => {
-                console.log('succeeded!');
                 modal.style.display = "none";
                 bg.classList.remove("blur");
                 document.getElementById("addToDeckBtn").innerHTML = "<a class='btn-link disabled'>Added !</a>";
+                document.getElementById("addToDeckBtn").onclick = () => {return false;}
             },
             error: (error) => {
                 console.log(error);
