@@ -52,6 +52,18 @@
 
 {% block script %}
 <script>
+    document.getElementById('recordStart').onclick = () => {
+        let recognization = new webkitSpeechRecognition();
+        recognization.lang = "ja-JP";
+        recognization.onstart = () => {
+            console.log("Listening...");
+        }
+        recognization.onresult = (e) => {
+            var transcript = e.results[0][0].transcript;
+            document.getElementById("msgText").value = transcript;
+        }
+        recognization.start();
+    }
     const chatAudio = (text) => {
         const synth = window.speechSynthesis;
         const voices = synth.getVoices();
@@ -64,7 +76,8 @@
     document.getElementsByClassName('fa fa-volume-up')[0].onclick = function () {
         chatAudio(document.getElementById('first_message').textContent);
     };
-
+</script>
+<script>
     const sendMsg = () => {
         const msgText = document.getElementById('msgText').value;
         document.getElementById('msgText').value = '';
@@ -87,7 +100,7 @@
                 "X-CSRFToken": getCookie("csrftoken"),
             },
             success: (data) => {
-                if(data.system) {
+                if (data.system) {
                     const youChatBox = document.getElementsByClassName('you')[0];
                     const newYouChat = youChatBox.cloneNode(true);
                     chat.appendChild(newYouChat);
@@ -102,26 +115,12 @@
                 document.getElementsByClassName('message')[messageLength - 1].innerHTML = data.response + ' <i class="fa fa-volume-up"></i>';
                 document.getElementsByClassName('message')[messageLength - 1].lastElementChild.style.cursor = 'pointer';
                 document.getElementsByClassName('message')[messageLength - 1].lastElementChild.onclick = function () { return chatAudio(data.response) };
-                
+
             },
             error: (error) => {
                 console.log(error);
             }
         })
-    }
-</script>
-<script>
-    document.getElementById('recordStart').onclick = () => {
-        let recognization = new webkitSpeechRecognition();
-        recognization.lang = "ja-JP";
-        recognization.onstart = () => {
-            console.log("Listening...");
-        }
-        recognization.onresult = (e) => {
-            var transcript = e.results[0][0].transcript;
-            document.getElementById("msgText").value = transcript;
-        }
-        recognization.start();
     }
 </script>
 {% endblock %}

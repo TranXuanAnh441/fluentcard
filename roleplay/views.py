@@ -2,9 +2,9 @@ from datetime import datetime
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import RoleplayPrompt
+from django.db.models import Q
 from .chatGPT_handler import sendChatMessageRequest, sendChatReviewRequest
-from .models import RoleplayPrompt
+from .models import RoleplayPrompt, WordUseHistory
 from config.utils import tokenize
 from decks.models import WordCard
 
@@ -36,10 +36,12 @@ def get_chat_response(request):
         msg = request.POST.get('message')
         tokens = tokenize(msg)
         response = ''
-        words= WordCard.objects.filter(deck__user=request.user, word__word__in=tokens).values_list('word__word', flat=True)
-        if len(words) > 0:
-            for word in words:
-                response += f"From System: You used the word: {word} in your deck !\n"
+        word_cards= WordCard.objects.filter(deck__user=request.user).filter(Q(word__word__in=tokens) | Q(word__word__icontains=msg))
+        if len(word_cards) > 0:
+            response += "From System: "
+            for word_card in word_cards:
+                WordUseHistory.objects.create(card=word_card).save()
+                response += "You used the word: {} in your '{}' deck ! ".format(word_card.word.word, word_card.deck.name)
         message = sendChatMessageRequest(msg)
         data = {
             'system': response,
