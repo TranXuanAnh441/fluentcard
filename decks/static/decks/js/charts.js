@@ -59,7 +59,7 @@ const lineChart = (chartId, x, y) => {
 }
 
 const pieChart = (chartId, x, y) => {
-    const pieColors = ["red", "green","blue","orange","brown"];
+    const pieColors = ["red", "green"];
     new Chart(chartId, {
         type: "pie",
         data: {

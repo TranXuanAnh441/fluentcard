@@ -16,8 +16,8 @@
     </div>
     <hr>
     <div class="container mb-5 mt-5">
-        <h1>Easiness</h1>
-        <h3>On a daily average, review easiness {{ easiness_average }}.</h3>
+        <h1>Correct rate</h1>
+        <h3>On a daily average, your rate of correct answer is {{ easiness_average }}%.</h3>
         <canvas id="easinessChart"></canvas>
     </div>
     <hr>
@@ -26,6 +26,13 @@
         <h3>The interval between dates of review.</h3>
         <canvas id="intervalChart"></canvas>
     </div>
+    <hr>
+    <div class="container mb-5 mt-5">
+        <h1>Used in Roleplay</h1>
+        <h3>The number of words you used in RolePlay.</h3>
+        <canvas id="useChart"></canvas>
+    </div>
+    <hr>
 </div>
 {% endblock %}
 
@@ -51,10 +58,13 @@
     const added_card_progress_y = JSON.parse('{{ added_card_progress_y|safe }}').map(num => Number(num));
     const card_interval_x = JSON.parse('{{ card_interval_x|safe }}');
     const card_interval_y = JSON.parse('{{ card_interval_y|safe }}').map(num => Number(num));
+    const word_use_x = JSON.parse('{{ word_use_x|safe }}');
+    const word_use_y = JSON.parse('{{ word_use_y|safe }}').map(num => Number(num));
 
     lineChart("addedChart", added_card_progress_x, added_card_progress_y);
     lineChart("learntChart", review_progress_x, review_progress_y);
     pieChart("easinessChart", card_easiness_progress_x, card_easiness_progress_y);
     barChart("intervalChart", card_interval_x, card_interval_y);
+    lineChart("useChart", word_use_x, word_use_y);
 </script>
 {% endblock %}

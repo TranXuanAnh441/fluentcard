@@ -5,8 +5,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.db.models import Count, Q
-from django.db.models.functions import ExtractMonth
+from django.db.models.functions import TruncDate
 from .models import Deck, WordCard, WordLearnHistory
+from roleplay.models import WordUseHistory
 from dictionary.models import WordDict
 from .chatGPT_handler import *
 from supermemo2 import SMTwo
@@ -180,33 +181,33 @@ def get_card_answer(request):
 def progress(request):
     review_progress_x = []
     review_progress_y = []
-    card_easiness_progress_x = []
-    card_easiness_progress_y = []
+    card_easiness_progress_x = ['incorrect', 'correct']
     added_card_progress_x = []
     added_card_progress_y = []
     card_interval_x = []
     card_interval_y = []
-
-    # w = WordCard.objects.filter(deck__user=request.user).annotate(month=ExtractMonth('created_at')).values('month').annotate(count=Count('id')).values('month', 'count')  
-    # for t in w:
-    #     print(t)
+    word_use_x = []
+    word_use_y = []
 
     review_progress = WordLearnHistory.objects.filter(
         card__deck__user=request.user).values('learnt_date').annotate(Count('card'))
-    card_easiness_progress = WordLearnHistory.objects.filter(
-        card__deck__user=request.user).values('easiness').annotate(Count('card'))
+    # card_easiness_progress = WordLearnHistory.objects.filter(
+    #     card__deck__user=request.user).values('easiness').annotate(Count('card'))
     new_added_card_progress = WordCard.objects.filter(
         deck__user=request.user).values('created_at').annotate(Count('id'))
     card_intervals = WordLearnHistory.objects.filter(
         card__deck__user=request.user).values('interval').annotate(Count('id'))
+    word_use_progress = WordUseHistory.objects.filter(
+        card__deck__user=request.user).annotate(date=TruncDate('learnt_date')).values('date').annotate(Count('card__id', distinct=True))
+
+    incorrect_card_number = WordLearnHistory.objects.filter(card__deck__user=request.user, easiness__lte = 1).count()
+    correct_card_number = WordLearnHistory.objects.filter(card__deck__user=request.user, easiness__gte = 2).count()
+    
+    card_easiness_progress_y = [incorrect_card_number, correct_card_number]
 
     for q in review_progress:
         review_progress_x.append(q['learnt_date'].strftime("%d-%m-%Y"))
         review_progress_y.append(q['card__count'])
-
-    for q in card_easiness_progress:
-        card_easiness_progress_x.append(q['easiness'])
-        card_easiness_progress_y.append(q['card__count'])
 
     for q in new_added_card_progress:
         added_card_progress_x.append(q['created_at'].strftime("%d-%m-%Y"))
@@ -216,10 +217,14 @@ def progress(request):
         card_interval_x.append(str(q['interval']))
         card_interval_y.append(q['id__count'])
 
+    for q in word_use_progress:
+        word_use_x.append(q['date'].strftime("%d-%m-%Y"))
+        word_use_y.append(q['card__id__count'])
+
     data = {
         'added_average': "{:.2f}".format(sum(added_card_progress_y) / len(added_card_progress_y)),
         'reviewed_average': "{:.2f}".format(sum(review_progress_y) / len(review_progress_y)),
-        'easiness_average': "{:.2f}".format(sum(card_easiness_progress_y) / len(card_easiness_progress_y)),
+        'easiness_average': "{:.2f}".format(correct_card_number * 100 / (correct_card_number + incorrect_card_number)),
         'review_progress_x': json.dumps(review_progress_x),
         'review_progress_y': json.dumps(review_progress_y),
         'card_easiness_progress_x': json.dumps(card_easiness_progress_x),
@@ -228,5 +233,7 @@ def progress(request):
         'added_card_progress_y': json.dumps(added_card_progress_y),
         'card_interval_x': json.dumps(card_interval_x),
         'card_interval_y': json.dumps(card_interval_y),
+        'word_use_x': json.dumps(word_use_x),
+        'word_use_y': json.dumps(word_use_y),
     }
     return render(request, 'decks/progress.html', data)
