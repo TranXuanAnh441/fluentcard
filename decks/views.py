@@ -94,7 +94,7 @@ def get_card_question(request):
         check = False
         test_count = 0
         while check == False:
-            if test_count >= 7:
+            if test_count >= 5:
                 break
             reply = sendQuestionRequest(word)
             if reply == None or ('question' not in reply) or (reply['question'].replace(' ', '') == ''):
@@ -103,8 +103,6 @@ def get_card_question(request):
                 continue
             test_count += 1
             question_data = reply
-            print(word)
-            print(reply)
             question_data_str = reply['question']
             tokens = tokenize(str(reply['question']))
             if 'options' in reply:

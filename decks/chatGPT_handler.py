@@ -54,7 +54,6 @@ def sendQuestionRequest(word):
 
 def sendAnswerRequest(question, answer):
     message = f"""{{"question" : "{question}",  "user_answer": "{answer}"}}"""
-    print(message)
     if message:
         answer_messages.append(
             {'role': 'user', 'content': message},
