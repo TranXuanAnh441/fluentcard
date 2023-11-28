@@ -27,6 +27,9 @@
     "functions": {
       "dictionary/views.py": {
         "maxDuration": 30
+      },
+      "decks/views.py": {
+        "maxDuration": 30
       }
     }
   }
