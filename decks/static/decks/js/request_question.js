@@ -35,6 +35,7 @@ function requestQuestion(request_question_url, cur_card_id, question_num, countD
         },
         error: (error) => {
             console.log(error);
+            document.getElementById("question").textContent = "Error when generating question (likely server timeout), please try reload the page again !";
         }
     })
 }
