@@ -26,16 +26,10 @@ Please response in json format. User Requests for question: Make question for th
 Your response for the request: {"question_format": question format ("multiple_choice" or "construct_response"), "question_type": question type, "question": question content about the given word, "options": an array of options (like ['a', 'b', 'c', 'd']) if question format is "multiple choice" and exclude this field if question format is "construct_response"}.
 """
 
-question_messages = [
-    {'role': 'system', 'content': question_message_prompt},
-]
-
-answer_messages = [
-    {'role': 'system', 'content': answer_message_prompt},
-]
-
-
 def sendQuestionRequest(word):
+    question_messages = [
+        {'role': 'system', 'content': question_message_prompt},
+    ]
     message = f"Make question for the word: {word}"
     question_messages.append(
         {'role': 'user', 'content': str(message)},
@@ -45,6 +39,9 @@ def sendQuestionRequest(word):
     )
     reply = chat.choices[0].message.content
     try:
+        reply = reply.replace("。", ".").replace("「", "[").replace("」", "]")
+        print(word)
+        print(reply)
         question = ast.literal_eval(reply)
         return question
     except:
@@ -53,15 +50,18 @@ def sendQuestionRequest(word):
 
 
 def sendAnswerRequest(question, answer):
+    answer_messages = [
+        {'role': 'system', 'content': answer_message_prompt},
+    ]   
     message = f"""{{"question" : "{question}",  "user_answer": "{answer}"}}"""
-    if message:
-        answer_messages.append(
-            {'role': 'user', 'content': message},
-        )
-        chat = client.chat.completions.create(
-            model=os.environ.get("FEEDBACK_MODEL"), messages=answer_messages
-        )
-        reply = chat.choices[0].message.content
+    
+    answer_messages.append(
+        {'role': 'user', 'content': message},
+    )
+    chat = client.chat.completions.create(
+        model=os.environ.get("FEEDBACK_MODEL"), messages=answer_messages
+    )
+    reply = chat.choices[0].message.content
     try:
         feedback = ast.literal_eval(reply)
         return feedback
