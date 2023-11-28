@@ -23,5 +23,10 @@
         "src": "/(.*)",
         "dest": "config/wsgi.py"
       }
-    ]
+    ],
+    "functions": {
+      "dictionary/views.py": {
+        "maxDuration": 30
+      }
+    }
   }
