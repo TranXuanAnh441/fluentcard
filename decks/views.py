@@ -43,7 +43,7 @@ def add_deck(request):
     if request.method == "POST":
         deck_name = request.POST['deck_name']
         Deck.objects.create(user=request.user, name=deck_name).save()
-    return redirect('deck_list')
+    return JsonResponse(data={'message': 'succeeded!'})
 
 
 @login_required

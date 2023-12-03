@@ -10,14 +10,14 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form class="form-group" action="{% url 'add_deck' %}" method="post">
+				<form class="form-group">
 					{% csrf_token %}
 					<label for="deck_name">
 						<h3>Your deck name: </h3>
 					</label>
 					<input id="deck_name" class="form-control" type="text" name="deck_name"
 						value="{% if deck_name %} {{ deck_name }} {% else %} {% endif %}">
-					<input type="submit" class="btn btn-primary" value="Create deck">
+					<input type="submit" class="btn btn-primary add-deck-btn" value="Create deck">
 				</form>
 			</div>
 		</div>
@@ -66,4 +66,35 @@
 {% block script %}
 <script src="{% static 'decks/js/add_deck_modal.js' %}"></script>
 <script src="{% static 'decks/js/deck_progress.js' %}"></script>
+<script>
+	const addDeckBtn = document.getElementsByClassName("add-deck-btn")[0];
+	addDeckBtn.onclick = () => {
+		const deckName = document.getElementById("deck_name").value;
+		if(deckName.replace(" ", "") == "") {
+			alert("deck name is blank!");
+			return false;
+		}
+		const url = "{% url 'add_deck' %}";
+		addDeckBtn.disabled = "disabled";
+		$.ajax({
+			url: url,
+			type: "POST",
+			dataType: "json",
+			data: {
+				'deck_name': deckName,
+			},
+			headers: {
+				"X-Requested-With": "XMLHttpRequest",
+				"X-CSRFToken": getCookie("csrftoken"),
+			},
+			success: (data) => {
+				console.log("succeed!");
+				location.reload();
+			},
+			error: (error) => {
+				console.log(error);
+			}
+		})
+	}
+</script>
 {% endblock %}

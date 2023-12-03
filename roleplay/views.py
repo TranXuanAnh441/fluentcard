@@ -36,8 +36,8 @@ def get_chat_response(request):
         msg = request.POST.get('message')
         tokens = tokenize(msg)
         response = ''
-        word_cards= WordCard.objects.filter(deck__user=request.user).filter(Q(word__word__in=tokens) | Q(word__word__icontains=msg))
-        if len(word_cards) > 0:
+        word_cards = WordCard.objects.filter(deck__user=request.user).filter(Q(word__word__in=tokens) | Q(word__word__icontains=msg))
+        if len(word_cards) > 0 and msg.replace(" ", "") != "":
             response += "From System: "
             for word_card in word_cards:
                 WordUseHistory.objects.create(card=word_card).save()
