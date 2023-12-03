@@ -80,6 +80,10 @@
 <script>
     const sendMsg = () => {
         const msgText = document.getElementById('msgText').value;
+        if(msgText.replace(" ", "").length == 0) {
+            alert("chat box is blank, please insert some values.");
+            return;
+        }
         document.getElementById('msgText').value = '';
         const chat = document.getElementById('chat');
         const meChatBox = document.getElementsByClassName('me')[0];
