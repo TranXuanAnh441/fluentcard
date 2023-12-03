@@ -219,10 +219,22 @@ def progress(request):
         word_use_x.append(q['date'].strftime("%d-%m-%Y"))
         word_use_y.append(q['card__id__count'])
 
+    added_average = "0"
+    if len(added_card_progress_y) > 0:
+        added_average =  "{:.2f}".format(sum(added_card_progress_y) / len(added_card_progress_y))
+    
+    reviewed_average = "0"
+    if len(review_progress_y) > 0:
+        reviewed_average = "{:.2f}".format(sum(review_progress_y) / len(review_progress_y))
+    
+    easiness_average = "0"
+    if (correct_card_number + incorrect_card_number) > 0:
+        easiness_average = "{:.2f}".format(correct_card_number * 100 / (correct_card_number + incorrect_card_number))
+    
     data = {
-        'added_average': "{:.2f}".format(sum(added_card_progress_y) / len(added_card_progress_y)),
-        'reviewed_average': "{:.2f}".format(sum(review_progress_y) / len(review_progress_y)),
-        'easiness_average': "{:.2f}".format(correct_card_number * 100 / (correct_card_number + incorrect_card_number)),
+        'added_average': added_average,
+        'reviewed_average': reviewed_average,
+        'easiness_average': easiness_average,
         'review_progress_x': json.dumps(review_progress_x),
         'review_progress_y': json.dumps(review_progress_y),
         'card_easiness_progress_x': json.dumps(card_easiness_progress_x),
