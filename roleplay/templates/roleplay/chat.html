@@ -54,6 +54,10 @@
 <script>
     document.getElementById('recordStart').onclick = () => {
         let recognization = new webkitSpeechRecognition();
+        if (recognization == undefined) {
+            alert("Speech Recognization is not supported. Please try again on another browser.")
+            return;
+        }
         recognization.lang = "ja-JP";
         recognization.onstart = () => {
             console.log("Listening...");
