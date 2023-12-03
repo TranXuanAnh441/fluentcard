@@ -26,14 +26,10 @@
 
 {% block style %}
 <style>
-	body, html {
-		position: absolute;
-		overflow: hidden;
-		clip: auto;
-	}
-
-	@media only screen and (max-device-width: 640px) {
-		body, html {
+	@media only screen and (max-device-width: 1000px) {
+		body,
+		html {
+			position: absolute;
 			width: 100%;
 			height: 100%;
 		}
