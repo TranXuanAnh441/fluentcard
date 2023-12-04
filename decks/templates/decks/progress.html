@@ -61,23 +61,23 @@
     const word_use_x = JSON.parse('{{ word_use_x|safe }}');
     const word_use_y = JSON.parse('{{ word_use_y|safe }}').map(num => Number(num));
 
-    if(added_card_progress_y.length() > 0) {
+    if(added_card_progress_y.length > 0) {
         lineChart("addedChart", added_card_progress_x, added_card_progress_y);
     }
 
-    if(review_progress_y.length() > 0) {
+    if(review_progress_y.length > 0) {
         lineChart("learntChart", review_progress_x, review_progress_y);
     }
 
-    if(card_easiness_progress_y.length() > 0) {
+    if(card_easiness_progress_x[0] > 0 & card_easiness_progress_x[1] > 0) {
         pieChart("easinessChart", card_easiness_progress_x, card_easiness_progress_y);
     }
 
-    if(card_interval_y.length() > 0) {
+    if(card_interval_y.length > 0) {
         barChart("intervalChart", card_interval_x, card_interval_y);
     }
 
-    if(word_use_y.length() > 0) {
+    if(word_use_y.length > 0) {
         lineChart("useChart", word_use_x, word_use_y);
     }
 

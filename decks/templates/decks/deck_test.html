@@ -26,7 +26,7 @@
 
   <div class="col-md-6 answer-container" style="display: none !important;">
     <div class="card">
-      <h3 class="card-title" id="word-slug"></h3>
+      <h3 class="card-title" id="word-slug"><p style='font-size: large;'>Loading...</p></h3>
       <div class="card-content">
         <div class="spelling mb-1">
           <p id="word-kanji"></p>
@@ -128,7 +128,7 @@
     document.getElementById("feedback").textContent = data['explanation'];
     document.getElementsByClassName('card-title')[0].style.borderBottom = '';
     document.getElementsByClassName('spelling')[0].style.borderLeft = '';
-    document.getElementById("word-slug").innerHTML = '';
+    document.getElementById("word-slug").innerHTML = "<p style='font-size: large;'>Loading...</p>";
     document.getElementById("word-kanji").textContent = '';
     document.getElementById("word-hiragana").textContent = '';
     document.getElementById("word-definitions").textContent = '';

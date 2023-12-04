@@ -130,8 +130,7 @@
             },
             error: (error) => {
                 console.log(error);
-                let messageLength = document.getElementsByClassName('new-you-message').length;
-                document.getElementsByClassName('new-you-message')[messageLength - 1].innerHTML = 'Error likely due to timeout, please try again with a better internet connection.';
+                alert('Error likely due to timeout, please try again with a better internet connection.');
             }
         })
     }
