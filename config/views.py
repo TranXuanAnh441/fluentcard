@@ -9,3 +9,11 @@ def index(requests):
 
 def help_page(requests):
     return render(requests, 'config/help_page.html', {})
+
+
+def handler404(request, exception):
+    return render(request, 'errors/404.html', {})
+
+
+def handler500(request):
+    return render(request, 'errors/404.html', {})
