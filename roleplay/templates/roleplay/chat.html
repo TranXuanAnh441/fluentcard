@@ -96,6 +96,12 @@
         let messageLength = document.getElementsByClassName('message').length;
         document.getElementsByClassName('message')[messageLength - 1].textContent = msgText;
 
+        const youChatBox = document.getElementsByClassName('you')[0];
+        const newYouChat = youChatBox.cloneNode(true);
+        chat.appendChild(newYouChat);
+        messageLength = document.getElementsByClassName('message').length;
+        document.getElementsByClassName('message')[messageLength - 1].innerHTML = '<p class="new-you-message">Loading...</p>';
+
         $.ajax({
             url: "{% url 'get_chat_response' %}",
             type: "POST",
@@ -116,13 +122,10 @@
                     document.getElementsByClassName('message')[messageLength - 1].innerHTML = data.system;
                 }
 
-                const youChatBox = document.getElementsByClassName('you')[0];
-                const newYouChat = youChatBox.cloneNode(true);
-                chat.appendChild(newYouChat);
-                let messageLength = document.getElementsByClassName('message').length;
-                document.getElementsByClassName('message')[messageLength - 1].innerHTML = data.response + ' <i class="fa fa-volume-up"></i>';
-                document.getElementsByClassName('message')[messageLength - 1].lastElementChild.style.cursor = 'pointer';
-                document.getElementsByClassName('message')[messageLength - 1].lastElementChild.onclick = function () { return chatAudio(data.response) };
+                let messageLength = document.getElementsByClassName('new-you-message').length;
+                document.getElementsByClassName('new-you-message')[messageLength - 1].innerHTML = data.response + ' <i class="fa fa-volume-up"></i>';
+                document.getElementsByClassName('new-you-message')[messageLength - 1].lastElementChild.style.cursor = 'pointer';
+                document.getElementsByClassName('new-you-message')[messageLength - 1].lastElementChild.onclick = function () { return chatAudio(data.response) };
 
             },
             error: (error) => {
