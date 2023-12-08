@@ -29,21 +29,10 @@ class Deck(models.Model):
 
 
 class WordCard(models.Model):
-    class CardTypes(models.TextChoices):
-        ME = "ME", "meanings"
-        KJ = "KJ", "kanji"
-        SY = "SY", "synonyms"
-        AN = "AN", "antonyms"
-        RW = "RW", "related words"
-        GM = "GM", "grammars"
-
-    card_type = models.CharField(
-        max_length=2,
-        choices=CardTypes.choices,
-    )
     word = models.ForeignKey(WordDict,on_delete=models.CASCADE)
     deck = models.ForeignKey(Deck, related_name='word_card', on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
+    
     
 class WordLearnHistory(models.Model):
     card = models.ForeignKey(WordCard, related_name='word_learn_history', on_delete=models.CASCADE)

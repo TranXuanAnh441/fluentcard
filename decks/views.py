@@ -51,8 +51,7 @@ def add_card(request):
     if request.method == "POST":
         deck_id = int(request.POST['deck_id'])
         word_id = int(request.POST['word_id'])
-        WordCard.objects.create(card_type="ME", deck_id=int(
-            deck_id), word_id=word_id).save()
+        WordCard.objects.create(deck_id=int(deck_id), word_id=word_id).save()
         return JsonResponse(data={'message': 'succeeded!'})
     return HttpResponseBadRequest
 
