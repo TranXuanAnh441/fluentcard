@@ -72,7 +72,7 @@ def word_detail(request, slug):
     data = {
         'word': word,
         'word_id': id,
-        'word_added': WordCard.objects.filter(word=id).count() > 0,
+        'word_added': WordCard.objects.filter(word=id, deck__user=request.user).count() > 0,
         # 'image_url': img,
         'decks': Deck.objects.filter(user=request.user)
     }
